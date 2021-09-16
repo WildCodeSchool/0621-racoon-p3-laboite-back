@@ -4,10 +4,11 @@ const morgan = require('morgan')
 const { setupRoutes } = require('./routes');
 
 const connection = require('./db-config.js')
+const { setupRoutes } = require('./routes')
 
 const app = express()
 
-setupRoutes(app);
+setupRoutes(app)
 
 const port = process.env.PORT || 4000
 
@@ -25,8 +26,6 @@ app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({ extend: true }))
-
-app.use('/url', Router)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
