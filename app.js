@@ -2,9 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const { setupRoutes } = require('./routes');
-
 const connection = require('./db-config.js')
-
 const app = express()
 
 setupRoutes(app)
