@@ -7,11 +7,12 @@ const poleRouter = require('express').Router()
 
 poleRouter.get('/', (req, res) => {
   mysql.query(
-    'SELECT * FROM pole LEFT JOIN activity ON pole.id=activity.pole_id',
+    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id;',
     (err, result) => {
       if (err) {
         res.status(500).send('Error retrieving data from database')
       } else {
+        console.log(result)
         res.status(200).json(result)
       }
     }
@@ -20,11 +21,11 @@ poleRouter.get('/', (req, res) => {
 
 // Post all poles //
 
-poleRouter.post('/', (req, res) => {
-   const { pole_name, pole_banner, pole_title, pole_picto, pole_desc, pole_func, pole_func_img, pole_num, pole_email, pole_id, activity_name, activity_img } = req.body;
-mysql.query('SELECT * FROM pole LEFT JOIN activity ON pole.id=activity.pole_id'
-)
-}
+// poleRouter.post('/', (req, res) => {
+//    const { pole_name, pole_banner, pole_title, pole_picto, pole_desc, pole_func, pole_func_img, pole_num, pole_email, pole_id, activity_name, activity_img } = req.body;
+// mysql.query('SELECT * FROM pole LEFT JOIN activity ON pole.id=activity.pole_id'
+// )
+// }
 
 // Get one pole//
 
