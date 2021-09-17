@@ -12,7 +12,6 @@ poleRouter.get('/', (req, res) => {
       if (err) {
         res.status(500).send('Error retrieving data from database')
       } else {
-        console.log(result)
         res.status(200).json(result)
       }
     }
@@ -31,13 +30,17 @@ poleRouter.get('/', (req, res) => {
 
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
-  mysql.query('SELECT * FROM pole WHERE id = ?', [poleId], (err, result) => {
-    if (err) {
-      res.status(500).send('Error retrieving data from database')
-    } else {
-      res.status(200).json(result)
+  mysql.query(
+    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
+    [poleId],
+    (err, result) => {
+      if (err) {
+        res.status(500).send('Error retrieving data from database')
+      } else {
+        res.status(200).json(result)
+      }
     }
-  })
+  )
 })
 
 module.exports = poleRouter
