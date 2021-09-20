@@ -18,13 +18,48 @@ poleRouter.get('/', (req, res) => {
   )
 })
 
-// Post all poles //
+// Post //
 
-// poleRouter.post('/', (req, res) => {
-//    const { pole_name, pole_banner, pole_title, pole_picto, pole_desc, pole_func, pole_func_img, pole_num, pole_email, pole_id, activity_name, activity_img } = req.body;
-// mysql.query('SELECT * FROM pole LEFT JOIN activity ON pole.id=activity.pole_id'
-// )
-// }
+poleRouter.post('/', (req, res) => {
+  const {
+    pole_name,
+    pole_title,
+    pole_picto,
+    pole_desc,
+    pole_banner,
+    pole_func,
+    pole_func_img,
+    pole_num,
+    pole_email,
+    pole_miniature_img,
+    pole_catchphrase
+  } = req.body
+  mysql.query(
+    'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [
+      pole_name,
+      pole_title,
+      pole_picto,
+      pole_desc,
+      pole_banner,
+      pole_func,
+      pole_func_img,
+      pole_num,
+      pole_email,
+      pole_miniature_img,
+      pole_catchphrase
+    ],
+    (err, result) => {
+      if (err) {
+        res.status(500).send('Error saving pole')
+      } else {
+        const id = result.insertId;
+        const newPole = { ...req.body, id };
+        res.status(201).json(newPole);
+      }
+    }
+  )
+})
 
 // Get one pole//
 
@@ -41,6 +76,17 @@ poleRouter.get('/:id', (req, res) => {
       }
     }
   )
+})
+
+poleRouter.delete('/:id', (req, res) => {
+  const poleId = req.params.id;
+  mysql.query('DELETE FROM pole WHERE id = ?', [poleId], (err) => {
+    if (err) {
+      res.status(500).send('Error deleting pole')
+    } else {
+      res.status(200).send('pole deleted')
+    }
+  })
 })
 
 module.exports = poleRouter
