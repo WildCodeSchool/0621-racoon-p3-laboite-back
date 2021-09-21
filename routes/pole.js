@@ -71,8 +71,18 @@ poleRouter.post('/', (req, res) => {
         res.status(500).send('Error saving pole')
       } else {
         const id = result.insertId
-        const newPole = { ...req.body, id }
-        res.status(201).json(newPole)
+        mysql.query(
+          'INSERT INtO activity WHERE id = ?',
+          [id],
+          (err, result) => {
+            if (err) {
+              res.status(500).send('Error saving pole')
+            } else {
+              const newPole = { ...req.body, id }
+              res.status(201).json(newPole)
+            }
+          }
+        )
       }
     }
   )
