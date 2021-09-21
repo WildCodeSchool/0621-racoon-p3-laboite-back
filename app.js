@@ -7,6 +7,8 @@ const connection = require('./db-config.js')
 
 const app = express()
 
+app.use(express.static('assetsconcept'));
+
 setupRoutes(app)
 
 const port = process.env.PORT || 4000
