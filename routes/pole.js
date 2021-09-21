@@ -18,6 +18,23 @@ poleRouter.get('/', (req, res) => {
   )
 })
 
+// Get one pole//
+
+poleRouter.get('/:id', (req, res) => {
+  const poleId = req.params.id
+  mysql.query(
+    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
+    [poleId],
+    (err, result) => {
+      if (err) {
+        res.status(500).send('Error retrieving data from database')
+      } else {
+        res.status(200).json(result)
+      }
+    }
+  )
+})
+
 // Post //
 
 poleRouter.post('/', (req, res) => {
@@ -53,38 +70,21 @@ poleRouter.post('/', (req, res) => {
       if (err) {
         res.status(500).send('Error saving pole')
       } else {
-        const id = result.insertId;
-        const newPole = { ...req.body, id };
-        res.status(201).json(newPole);
-      }
-    }
-  )
-})
-
-// Get one pole//
-
-poleRouter.get('/:id', (req, res) => {
-  const poleId = req.params.id
-  mysql.query(
-    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
-    [poleId],
-    (err, result) => {
-      if (err) {
-        res.status(500).send('Error retrieving data from database')
-      } else {
-        res.status(200).json(result)
+        const id = result.insertId
+        const newPole = { ...req.body, id }
+        res.status(201).json(newPole)
       }
     }
   )
 })
 
 poleRouter.delete('/:id', (req, res) => {
-  const poleId = req.params.id;
-  mysql.query('DELETE FROM pole WHERE id = ?', [poleId], (err) => {
+  const poleId = req.params.id
+  mysql.query('DELETE FROM pole WHERE id = ?', [poleId], err => {
     if (err) {
       res.status(500).send('Error deleting pole')
     } else {
-      res.status(200).send('pole deleted')
+      res.status(200).send('Pole deleted')
     }
   })
 })
