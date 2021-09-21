@@ -1,9 +1,8 @@
-const express = require('express')
 const mysql = require('../db-config')
 const { promise } = require('../db-config')
 const poleRouter = require('express').Router()
 
-// Get all poles //
+// Get all poles
 
 poleRouter.get('/', (req, res) => {
   mysql.query(
@@ -18,7 +17,7 @@ poleRouter.get('/', (req, res) => {
   )
 })
 
-// Get one pole//
+// Get one pole
 
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
@@ -35,62 +34,106 @@ poleRouter.get('/:id', (req, res) => {
   )
 })
 
-// Post //
+// Post ---------------------------------------------------------
+
+// poleRouter.post('/', (req, res) => {
+//   const {
+//     pole_name,
+//     pole_title,
+//     pole_picto,
+//     pole_desc,
+//     pole_banner,
+//     pole_func,
+//     pole_func_img,
+//     pole_num,
+//     pole_email,
+//     pole_miniature_img,
+//     pole_catchphrase
+//   } = req.body
+//   mysql.query(
+//     'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+//     [
+//       pole_name,
+//       pole_title,
+//       pole_picto,
+//       pole_desc,
+//       pole_banner,
+//       pole_func,
+//       pole_func_img,
+//       pole_num,
+//       pole_email,
+//       pole_miniature_img,
+//       pole_catchphrase
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         res.status(500).send('Error saving pole')
+//       } else {
+//         const id = result.insertId
+//         const { activity_desc, activity_img } = req.body
+//         mysql.query(
+//           'INSERT INTO activity (activity_desc, activity_img, pole_id) VALUES (?, ?, ?)',
+//           [activity_desc, activity_img, id],
+//           (err, result2) => {
+//             if (err) {
+//               res.status(500).send('Error saving pole')
+//             } else {
+//               res.status(201).json({ result, result2 })
+//             }
+//           }
+//         )
+//       }
+//     }
+//   )
+// })
+
+// ----------------------------------------------------
 
 poleRouter.post('/', (req, res) => {
-  const {
-    pole_name,
-    pole_title,
-    pole_picto,
-    pole_desc,
-    pole_banner,
-    pole_func,
-    pole_func_img,
-    pole_num,
-    pole_email,
-    pole_miniature_img,
-    pole_catchphrase
-  } = req.body
-  mysql.query(
-    'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [
-      pole_name,
-      pole_title,
-      pole_picto,
-      pole_desc,
-      pole_banner,
-      pole_func,
-      pole_func_img,
-      pole_num,
-      pole_email,
-      pole_miniature_img,
-      pole_catchphrase
-    ],
-    (err, result) => {
-      if (err) {
-        res.status(500).send('Error saving pole')
-      } else {
-        const id = result.insertId
-        mysql.query(
-          'INSERT INtO activity WHERE id = ?',
-          [id],
-          (err, result) => {
-            if (err) {
-              res.status(500).send('Error saving pole')
-            } else {
-              const newPole = { ...req.body, id }
-              res.status(201).json(newPole)
-            }
-          }
-        )
-      }
+  const poleData = [
+    req.body.pole_name,
+    req.body.pole_title,
+    req.body.pole_picto,
+    req.body.pole_desc,
+    req.body.pole_banner,
+    req.body.pole_func,
+    req.body.pole_func_img,
+    req.body.pole_num,
+    req.body.pole_email,
+    req.body.pole_miniature_img,
+    req.body.pole_catchphrase
+  ]
+  const sql =
+    'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  mysql.query(sql, poleData, (err, result) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send('Error from database')
+    } else {
+      console.log(result)
+      const poleId = result.insertId
+      const sql2 =
+        'INSERT INTO activity (activity_desc, activity_img, pole_id) VALUES ?'
+      const activityData = req.body.activity.map(services => [
+        services[0],
+        services[1],
+        poleId
+      ])
+      console.log(activityData)
+      mysql.query(sql2, [activityData], (err, result2) => {
+        if (err) {
+          res.status(500).send(err)
+        } else {
+          res.status(201).json({ ...req.body })
+        }
+      })
     }
-  )
+  })
 })
 
 poleRouter.delete('/:id', (req, res) => {
   const poleId = req.params.id
-  mysql.query('DELETE FROM pole WHERE id = ?', [poleId], err => {
+  mysql.query('DELETE FROM pole WHERE id = ? ', [poleId], err => {
     if (err) {
       res.status(500).send('Error deleting pole')
     } else {
