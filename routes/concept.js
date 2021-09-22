@@ -2,9 +2,9 @@ const conceptRouter = require('express').Router();
 const Concept = require('../models/concept');
 
 conceptRouter.get('/', (req, res) => {
-  Concept.findMany(req.query)
-    .then((results) => {
-      res.json(results);
+  Concept.getInfo(req.query)
+    .then((concept) => {
+      res.json(concept);
     })
     .catch((err) => {
       console.log(err)

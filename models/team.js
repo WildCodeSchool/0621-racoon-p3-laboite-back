@@ -5,7 +5,7 @@ const db = connection.promise();
 
 
 // Get member team
-const findTeam = () => {
+const getInfo = () => {
   let sql = 'SELECT * FROM team';
   return db.query(sql).then(([results]) => results);
 }
@@ -38,7 +38,7 @@ const findTeam = () => {
 // }
 
 module.exports = {
-  findTeam,
+      getInfo,
 //   findOne,
 //   create,
 //   update,

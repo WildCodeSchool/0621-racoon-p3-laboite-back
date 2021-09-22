@@ -4,11 +4,11 @@ const Joi = require('joi');
 const db = connection.promise()
 
 //Get all from concept
-const findMany = () => {
+const getInfo = () => {
   let sql = 'SELECT * FROM concept'
   return db.query(sql).then(([results]) => results)
 }
 
 module.exports = {
-  findMany
+  getInfo,
 }
