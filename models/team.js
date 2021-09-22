@@ -1,7 +1,7 @@
 const connection = require('../db-config');
-// const Joi = require('joi');
+const Joi = require('joi');
 
-const db = connection.promise()
+const db = connection.promise();
 
 
 // Get member team
@@ -10,37 +10,37 @@ const findTeam = () => {
   return db.query(sql).then(([results]) => results);
 }
 
-const findOne = (id) => {
-  return db
-    .query('SELECT * FROM movies WHERE id = ?', [id])
-    .then(([results]) => results[0]);
-};
+// const findOne = (id) => {
+//   return db
+//     .query('SELECT * FROM team WHERE id = ?', [id])
+//     .then(([results]) => results[0]);
+// };
 
-const create = ({ member_img, member_name, member_role }) => {
-  return db
-    .query('INSERT INTO team (member_img, member_name, member_role) VALUES (?, ?, ?)',
-    [member_img, member_name, member_role]
-    )
-    .then(([results]) => {
-      const id = results.insertId;
-      return { id, member_img, member_name, member_role};
-    });
-};
+// const create = ({ member_img, member_name, member_role }) => {
+//   return db
+//     .query('INSERT INTO team (member_img, member_name, member_role) VALUES (?, ?, ?)',
+//     [member_img, member_name, member_role]
+//     )
+//     .then(([results]) => {
+//       const id = results.insertId;
+//       return { id, member_img, member_name, member_role};
+//     });
+// };
 
-const update = (id, newAttributes) => {
-  return db.query('UPDATE team SET ? WHERE id = ?', [newAttributes, id]);
-}
+// const update = (id, newAttributes) => {
+//   return db.query('UPDATE team SET ? WHERE id = ?', [newAttributes, id]);
+// }
 
-const destroy = (id) => {
-  return db
-    .query('DELETE FROM team WHERE id = ?', [id])
-    .then(([result]) => result.affectedRows !== 0);
-}
+// const destroy = (id) => {
+//   return db
+//     .query('DELETE FROM team WHERE id = ?', [id])
+//     .then(([result]) => result.affectedRows !== 0);
+// }
 
 module.exports = {
   findTeam,
-  findOne,
-  create,
-  update,
-  destroy
+//   findOne,
+//   create,
+//   update,
+//   destroy
 }

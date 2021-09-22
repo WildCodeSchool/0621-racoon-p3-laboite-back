@@ -7,7 +7,7 @@ const connection = require('./db-config.js')
 
 const app = express()
 
-app.use(express.static('assetsconcept'));
+app.use(express.static('assetsconcept'))
 
 setupRoutes(app)
 
