@@ -11,7 +11,7 @@ const setupRoutes = app => {
   app.use('/concept', conceptRouter)
   app.use('/contact', contactRouter)
   app.use('/social', socialRouter)
-  app.use('/team', teamRouter);
+  app.use('/team', teamRouter)
 }
 
 module.exports = { setupRoutes }

@@ -5,9 +5,7 @@ const { setupRoutes } = require('./routes')
 const connection = require('./db-config.js')
 const app = express()
 
-app.use(express.static('assetsconcept'));
-
-setupRoutes(app)
+app.use(express.static('assetsconcept'))
 
 const port = process.env.PORT || 4000
 
@@ -21,7 +19,11 @@ connection.connect(err => {
 })
 
 // Route middleware
-app.use(cors())
+app.use(
+  cors({
+    origin: '*'
+  })
+)
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({ extend: true }))
