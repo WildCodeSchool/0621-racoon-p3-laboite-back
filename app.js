@@ -1,10 +1,13 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const { setupRoutes } = require('./routes');
+const { setupRoutes } = require('./routes')
 const connection = require('./db-config.js')
 const app = express()
 
+app.use(express.static('assetsconcept'));
+
+setupRoutes(app)
 
 const port = process.env.PORT || 4000
 
