@@ -36,59 +36,6 @@ poleRouter.get('/:id', (req, res) => {
 
 // Post ---------------------------------------------------------
 
-// poleRouter.post('/', (req, res) => {
-//   const {
-//     pole_name,
-//     pole_title,
-//     pole_picto,
-//     pole_desc,
-//     pole_banner,
-//     pole_func,
-//     pole_func_img,
-//     pole_num,
-//     pole_email,
-//     pole_miniature_img,
-//     pole_catchphrase
-//   } = req.body
-//   mysql.query(
-//     'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-//     [
-//       pole_name,
-//       pole_title,
-//       pole_picto,
-//       pole_desc,
-//       pole_banner,
-//       pole_func,
-//       pole_func_img,
-//       pole_num,
-//       pole_email,
-//       pole_miniature_img,
-//       pole_catchphrase
-//     ],
-//     (err, result) => {
-//       if (err) {
-//         res.status(500).send('Error saving pole')
-//       } else {
-//         const id = result.insertId
-//         const { activity_desc, activity_img } = req.body
-//         mysql.query(
-//           'INSERT INTO activity (activity_desc, activity_img, pole_id) VALUES (?, ?, ?)',
-//           [activity_desc, activity_img, id],
-//           (err, result2) => {
-//             if (err) {
-//               res.status(500).send('Error saving pole')
-//             } else {
-//               res.status(201).json({ result, result2 })
-//             }
-//           }
-//         )
-//       }
-//     }
-//   )
-// })
-
-// ----------------------------------------------------
-
 poleRouter.post('/', (req, res) => {
   const poleData = [
     req.body.pole_name,
