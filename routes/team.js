@@ -6,7 +6,7 @@ teamRouter.get('/', (req, res) => {
     .then(team => {
       res.json(team)
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err)
       res.status(500).send('Error retrieving team member from database')
     })
