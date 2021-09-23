@@ -1,14 +1,15 @@
-const teamRouter = require('express').Router();
-const Team = require('../models/team');
+const teamRouter = require('express').Router()
+const Team = require('../models/team')
 
 teamRouter.get('/', (req, res) => {
   Team.getInfo(req.query)
-    .then((team) => {
+    .then(team => {
       res.json(team)
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send('Error retrieving team member from database');
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error retrieving team member from database')
+    })
 })
 
 // teamRouter.post('/', (req, res) => {
