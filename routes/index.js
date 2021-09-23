@@ -13,9 +13,7 @@ const setupRoutes = app => {
   app.use('/contact', contactRouter)
   app.use('/social', socialRouter)
   app.use('/team', teamRouter)
-
   app.use('/login', loginRouter)
-
 }
 
 module.exports = { setupRoutes }
