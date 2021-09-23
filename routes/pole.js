@@ -46,6 +46,7 @@ poleRouter.get('/:id', (req, res) => {
           pole_catchphrase: result[0].pole_catchphrase,
           activities: []
         }
+        console.log(result)
         for (let i = 0; i < result.length; i++) {
           if (result[i].pole_id) {
             poleEntity.activities.push({
