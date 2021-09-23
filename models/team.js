@@ -1,5 +1,5 @@
 const connection = require('../db-config')
-// const Joi = require('joi');
+const Joi = require('joi')
 
 const db = connection.promise()
 
@@ -11,7 +11,7 @@ const getInfo = () => {
 
 // const findOne = (id) => {
 //   return db
-//     .query('SELECT * FROM movies WHERE id = ?', [id])
+//     .query('SELECT * FROM team WHERE id = ?', [id])
 //     .then(([results]) => results[0]);
 // };
 
@@ -38,8 +38,4 @@ const getInfo = () => {
 
 module.exports = {
   getInfo
-  // findOne,
-  // create,
-  // update,
-  // destroy
 }

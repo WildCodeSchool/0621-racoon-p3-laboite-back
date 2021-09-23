@@ -30,9 +30,11 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-static": "^1.2.6",
     "joi": "^17.4.2",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
-    "mysql2": "^2.3.0"
+    "mysql2": "^2.3.0",
+    "serve-static": "^1.14.1"
   }
 }
