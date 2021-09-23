@@ -3,7 +3,7 @@ const Team = require('../models/team')
 
 teamRouter.get('/', (req, res) => {
   Team.getInfo(req.query)
-    .then((team) => {
+    .then(team => {
       res.json(team)
     })
     .catch((err) => {

@@ -1,13 +1,12 @@
-const connection = require('../db-config');
-const Joi = require('joi');
+const connection = require('../db-config')
+const Joi = require('joi')
 
-const db = connection.promise();
-
+const db = connection.promise()
 
 // Get member team
 const getInfo = () => {
-  let sql = 'SELECT * FROM team';
-  return db.query(sql).then(([results]) => results);
+  let sql = 'SELECT * FROM team'
+  return db.query(sql).then(([results]) => results)
 }
 
 // const findOne = (id) => {
@@ -38,9 +37,5 @@ const getInfo = () => {
 // }
 
 module.exports = {
-      getInfo,
-//   findOne,
-//   create,
-//   update,
-//   destroy
+  getInfo
 }
