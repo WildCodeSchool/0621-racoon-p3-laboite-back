@@ -5,6 +5,7 @@ const { setupRoutes } = require('./routes')
 const connection = require('./db-config.js')
 const app = express()
 
+
 app.use(express.static('assetsconcept'))
 
 setupRoutes(app)
@@ -25,6 +26,7 @@ app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({ extend: true }))
+app.use('/static', express.static(__dirname + '/public'))
 
 setupRoutes(app)
 
