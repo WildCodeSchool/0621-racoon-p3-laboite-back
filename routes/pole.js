@@ -16,68 +16,48 @@ poleRouter.get('/', (req, res) => {
 
 // Get one pole
 
-// poleRouter.get('/:id', (req, res) => {
-//   const poleId = req.params.id
-//   mysql.query(
-//     'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
-//     [poleId],
-//     (err, result) => {
-//       if (err) {
-//         res.status(500).send('Error retrieving data from database')
-//       } else {
-//         // test if the id exist
-//         if (result.length === 0) {
-//           res.status(404).send('not found')
-//           return
-//         }
-//         // create entity mapped with result in order to get the activities inside one pole
-//         let poleEntity = {
-//           pole_id: result[0].id,
-//           pole_name: result[0].pole_name,
-//           pole_title: result[0].pole_title,
-//           pole_picto: result[0].pole_picto,
-//           pole_desc: result[0].pole_desc,
-//           pole_banner: result[0].pole_banner,
-//           pole_func: result[0].pole_func,
-//           pole_func_img: result[0].pole_func_img,
-//           pole_num: result[0].pole_num,
-//           pole_email: result[0].pole_email,
-//           pole_miniature_img: result[0].pole_miniature_img,
-//           pole_catchphrase: result[0].pole_catchphrase,
-//           activities: []
-//         }
-//         for (let i = 0; i < result.length; i++) {
-//           if (result[i].pole_id) {
-//             poleEntity.activities.push({
-//               activity_desc: result[i].activity_desc,
-//               activity_img: result[i].activity_img
-//             })
-//           }
-//         }
-//         res.status(200).json(poleEntity)
-//       }
-//     }
-//   )
-// })
-
-//Test double request get one --------------------------------
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
-  const sql = 'SELECT * FROM pole WHERE id = ?'
-  mysql.query(sql, [poleId], (err, result) => {
-    if (err) {
-      res.status(500).send('Error retrieving data')
-    } else {
-      const sql2 = 'SELECT * FROM activity WHERE pole_id = ?'
-      mysql.query(sql2, [poleId], (err, result2) => {
-        if (err) {
-          res.status(500).send('Error retrieving data')
-        } else {
-          res.status(200).json({ result, result2 })
+  mysql.query(
+    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
+    [poleId],
+    (err, result) => {
+      if (err) {
+        res.status(500).send('Error retrieving data from database')
+      } else {
+        // test if the id exist
+        if (result.length === 0) {
+          res.status(404).send('not found')
+          return
         }
-      })
+        // create entity mapped with result in order to get the activities inside one pole
+        let poleEntity = {
+          pole_id: result[0].id,
+          pole_name: result[0].pole_name,
+          pole_title: result[0].pole_title,
+          pole_picto: result[0].pole_picto,
+          pole_desc: result[0].pole_desc,
+          pole_banner: result[0].pole_banner,
+          pole_func: result[0].pole_func,
+          pole_func_img: result[0].pole_func_img,
+          pole_num: result[0].pole_num,
+          pole_email: result[0].pole_email,
+          pole_miniature_img: result[0].pole_miniature_img,
+          pole_catchphrase: result[0].pole_catchphrase,
+          activities: []
+        }
+        for (let i = 0; i < result.length; i++) {
+          if (result[i].pole_id) {
+            poleEntity.activities.push({
+              activity_desc: result[i].activity_desc,
+              activity_img: result[i].activity_img
+            })
+          }
+        }
+        res.status(200).json(poleEntity)
+      }
     }
-  })
+  )
 })
 
 // Post ---------------------------------------------------------
