@@ -19,7 +19,7 @@ poleRouter.get('/', (req, res) => {
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
   mysql.query(
-    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
+    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
     [poleId],
     (err, result) => {
       if (err) {
@@ -48,7 +48,9 @@ poleRouter.get('/:id', (req, res) => {
         }
         for (let i = 0; i < result.length; i++) {
           if (result[i].pole_id) {
+            console.log(result)
             poleEntity.activities.push({
+              id: result[i].id,
               activity_desc: result[i].activity_desc,
               activity_img: result[i].activity_img
             })
