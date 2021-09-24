@@ -20,7 +20,7 @@ connection.connect(err => {
 app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json())
-app.use(express.urlencoded({ extend: true }))
+app.use(express.urlencoded({ extend: true })) // for postman for form input
 app.use('/static', express.static(__dirname + '/public'))
 
 setupRoutes(app)
