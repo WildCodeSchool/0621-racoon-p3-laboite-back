@@ -1,6 +1,14 @@
 const connection = require('../db-config')
-
+const Joi = require('joi')
 const db = connection.promise()
+
+const validate = (data, forCreation = true) => {
+  const presence = forCreation ? 'required' : 'optional'
+  return Joi.object({
+    email: Joi.string().email().max(254).presence(presence),
+    password: Joi.string().max(255).presence(presence)
+  }).validate(data, { abortEarly: false }).error
+}
 
 const addAdmin = (email, hashedPassword) => {
   return db
@@ -12,10 +20,9 @@ const addAdmin = (email, hashedPassword) => {
 }
 
 const findByEmail = email => {
-  console.log('emailToClient', email)
   return db
     .query('SELECT * FROM admin WHERE admin_email = ?', [email])
     .then(([results]) => console.log('resToDb', results[0]) || results[0])
 }
 
-module.exports = { findByEmail, addAdmin }
+module.exports = { findByEmail, addAdmin, validate }

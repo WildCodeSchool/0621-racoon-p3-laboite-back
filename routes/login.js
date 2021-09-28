@@ -13,21 +13,28 @@ loginRouter.post('/addAdmin', async (req, res) => {
 
 loginRouter.post('/', (req, res) => {
   const { email, password } = req.body
-  Login.findByEmail(email).then(user => {
-    if (!user) res.status(401).send('Invalid credentials')
-    else {
-      console.log('userWithHasPass', user)
-      verifyPassword(password, user.admin_password).then(passwordIsCorrect => {
-        console.log('passIsCorrect', passwordIsCorrect)
-        if (passwordIsCorrect) {
-          console.log('userId', user.id)
-          const token = calculateToken(email, user.id)
-          res.cookie('user_token', token)
-          res.send(token)
-        } else res.status(401).send('Invalid credentials')
-      })
-    }
-  })
+  let validationErrors = null
+  validationErrors = Login.validate(req.body)
+  if (validationErrors) res.status(401).send('Invalid format credentials')
+  else {
+    Login.findByEmail(email).then(user => {
+      if (!user) res.status(401).send('Invalid credentials')
+      else {
+        verifyPassword(password, user.admin_password).then(
+          passwordIsCorrect => {
+            if (passwordIsCorrect) {
+              const token = calculateToken(email, user.id)
+              res.header('Access-Control-Expose-Headers', 'x-access-token')
+              res.set('x-access-token', token)
+              res.status(200).send('User connected !')
+            } else {
+              res.status(401).send('Invalid credentials')
+            }
+          }
+        )
+      }
+    })
+  }
 })
 
 module.exports = loginRouter
