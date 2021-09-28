@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
 const { setupRoutes } = require('./routes')
 const connection = require('./db-config.js')
 const app = express()
@@ -20,7 +21,9 @@ connection.connect(err => {
 app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json())
-app.use(express.urlencoded({ extend: true })) // for postman for form input
+app.use(express.urlencoded({ extend: true }))
+app.use(cookieParser())
+app.use(express.static('assetsconcept'))
 app.use('/static', express.static(__dirname + '/public'))
 
 setupRoutes(app)

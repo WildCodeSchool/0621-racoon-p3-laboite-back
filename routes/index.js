@@ -4,6 +4,7 @@ const contactRouter = require('./contact')
 const socialRouter = require('./social')
 const poleRouter = require('./pole')
 const teamRouter = require('./team')
+const loginRouter = require('./login')
 
 // add your middware route: app.use('url', myRouter)
 const setupRoutes = app => {
@@ -12,6 +13,7 @@ const setupRoutes = app => {
   app.use('/contact', contactRouter)
   app.use('/social', socialRouter)
   app.use('/team', teamRouter)
+  app.use('/login', loginRouter)
 }
 
 module.exports = { setupRoutes }

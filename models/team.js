@@ -1,5 +1,7 @@
 const connection = require('../db-config')
+
 const Joi = require('joi')
+
 
 const db = connection.promise()
 
@@ -38,4 +40,10 @@ const getInfo = () => {
 
 module.exports = {
   getInfo
+
+  // findOne,
+  // create,
+  // update,
+  // destroy
+
 }
