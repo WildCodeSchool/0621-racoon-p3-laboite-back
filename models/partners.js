@@ -1,14 +1,10 @@
 const connection = require('../db-config')
-const Joi = require('joi')
+// const Joi = require('join')
 
 const db = connection.promise()
 
-//Get all from concept
 const getInfo = () => {
-  let sql = 'SELECT * FROM concept'
-  return db.query(sql).then(([results]) => results)
+  return db.query('SELECT * FROM contact').then(([results]) => results[0])
 }
 
-module.exports = {
-  getInfo
-}
+module.exports = { getInfo }
