@@ -26,6 +26,10 @@ app.use(cookieParser())
 app.use(express.static('assetsconcept'))
 app.use('/static', express.static(__dirname + '/public'))
 
+app.get('/partenaires', (req, res) =>{
+  res.status(200).send('Je suis dans le /')
+})
+
 setupRoutes(app)
 
 app.listen(port, () => {
