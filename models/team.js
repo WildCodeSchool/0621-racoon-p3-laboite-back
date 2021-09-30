@@ -2,7 +2,6 @@ const connection = require('../db-config')
 
 const Joi = require('joi')
 
-
 const db = connection.promise()
 
 // Get member team
@@ -17,16 +16,17 @@ const getInfo = () => {
 //     .then(([results]) => results[0]);
 // };
 
-// const create = ({ member_img, member_name, member_role }) => {
-//   return db
-//     .query('INSERT INTO team (member_img, member_name, member_role) VALUES (?, ?, ?)',
-//     [member_img, member_name, member_role]
-//     )
-//     .then(([results]) => {
-//       const id = results.insertId;
-//       return { id, member_img, member_name, member_role};
-//     });
-// };
+const create = ({ member_img, member_name, member_role }) => {
+  return db
+    .query(
+      'INSERT INTO team (member_img, member_name, member_role) VALUES (?, ?, ?)',
+      [member_img, member_name, member_role]
+    )
+    .then(([results]) => {
+      const id = results.insertId
+      return { id, member_img, member_name, member_role }
+    })
+}
 
 // const update = (id, newAttributes) => {
 //   return db.query('UPDATE team SET ? WHERE id = ?', [newAttributes, id]);
@@ -45,5 +45,4 @@ module.exports = {
   // create,
   // update,
   // destroy
-
 }

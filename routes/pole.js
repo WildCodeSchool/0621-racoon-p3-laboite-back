@@ -35,7 +35,7 @@ poleRouter.get('/:id', (req, res) => {
     [poleId],
     (err, result) => {
       if (err) {
-        res.status(500).send('Error retrieving data from database')
+        res.status(500).send('Error retrieving data from database one pole')
       } else {
         // test if the id exist
         if (result.length === 0) {
