@@ -14,22 +14,25 @@ activitiesRouter.get('/', (req, res) => {
 })
 
 activitiesRouter.get('/:id', (req, res) => {
-  activity.findOne(req.params.id)
-    .then((activity) => {
-      if (activity) res.json(activity);
-      else res.status(404).send('activity not found');
+  activity
+    .getById(req.params.id)
+    .then(activity => {
+      if (activity) res.json(activity)
+      else res.status(404).send('activity not found')
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error retrieving activity from database');
-    });
-});
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving activity from database')
+    })
+})
 
-// activitiesRouter.post('/', (req, res) => {
-//   const { id } = req.body;
-//   let validationErrors = null;
- 
-//     });
-// });
+activitiesRouter.post('/', (req, res) => {
+  const { id, activity_title, activity_img, activity_desc, pole } = req.body
+  let validationErrors = null
+  console.log(req.body)
+  activity
+    .create(id, activity_title, activity_img, activity_desc, pole)
+    .then(result => res.json(result))
+})
 
 module.exports = activitiesRouter
