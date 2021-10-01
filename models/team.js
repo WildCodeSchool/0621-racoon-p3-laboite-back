@@ -27,20 +27,20 @@ const findOne = id => {
 
 const findOneWithName = name => {
   return db
-    .query(`SELECT * FROM team WHERE member_name = ?`, [name])
+    .query('SELECT * FROM team WHERE member_name LIKE ?', [name])
     .then(([results]) => results[0])
 }
 
-const create = ({ member_img, member_name, tiny }) => {
-  console.log({ member_img, member_name, tiny })
+const create = (member_img, member_name, member_role) => {
+  console.log(member_img, member_name, member_role)
   return db
     .query(
       'INSERT INTO team (member_img, member_name, member_role) VALUES (?, ?, ?)',
-      [member_img, member_name, tiny]
+      [member_img, member_name, member_role]
     )
     .then(([results]) => {
       const id = results.insertId
-      return { id, member_img, member_name, tiny }
+      return { id, member_img, member_name, member_role }
     })
 }
 
