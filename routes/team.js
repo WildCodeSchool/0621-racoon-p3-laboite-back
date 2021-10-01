@@ -13,6 +13,17 @@ teamRouter.get('/', (req, res) => {
     })
 })
 
+teamRouter.get('/:id', (req, res) => {
+  const id = req.params.id
+  Team.findOne(id).then(member => {
+    if (!member) {
+      res.status(404).json({ message: `Member not found` })
+    } else {
+      res.status(200).json(member)
+    }
+  })
+})
+
 teamRouter.post('/', (req, res) => {
   const { member_name } = req.body[0]
   console.log('memName', member_name)
