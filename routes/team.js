@@ -7,27 +7,35 @@ teamRouter.get('/', (req, res) => {
       res.json(team)
     })
 
-    .catch((err) => {
+    .catch(err => {
       console.log(err)
       res.status(500).send('Error retrieving team member from database')
     })
 })
 
-// teamRouter.post('/', (req, res) => {
-//   const error = Team.validate(req.body);
-//   if (error) {
-//     res.status(422).json({ validationErrors: error.details });
-//   } else {
-//     Team.create(req.body)
-//       .then((createdTeam) => {
-//         res.status(201).json(createdTeam);
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//         res.status(500).send('Error saving the team');
-//       });
-//   }
-// });
+teamRouter.post('/', (req, res) => {
+  // const error = Team.validate(req.body)
+  // if (error) {
+  //   res.status(422).json({ validationErrors: error.details })
+  // } else {
+  Team.findOneWithName(req.body.member_name).then(user => {
+    if (user) {
+      res.status(401).send('Member already exists')
+    } else {
+      console.log('body', req.body)
+      Team.create(req.body[0])
+        .then(createdTeam => {
+          res.status(201).json(createdTeam)
+        })
+        .catch(err => {
+          console.error(err)
+          res.status(500).send('Error saving the team')
+        })
+    }
+  })
+
+  // }
+})
 
 // teamRouter.put('/', (req, res) => {
 //   let existingTeam = null;
