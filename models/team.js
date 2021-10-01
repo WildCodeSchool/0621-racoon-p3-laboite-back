@@ -44,22 +44,22 @@ const create = ({ member_img, member_name, tiny }) => {
     })
 }
 
-// const update = (id, newAttributes) => {
-//   return db.query('UPDATE team SET ? WHERE id = ?', [newAttributes, id]);
-// }
+const update = (id, newAttributes) => {
+  return db.query('UPDATE team SET ? WHERE id = ?', [newAttributes, id])
+}
 
-// const destroy = (id) => {
-//   return db
-//     .query('DELETE FROM team WHERE id = ?', [id])
-//     .then(([result]) => result.affectedRows !== 0);
-// }
+const destroy = id => {
+  return db
+    .query('DELETE FROM team WHERE id = ?', [id])
+    .then(([result]) => result.affectedRows !== 0)
+}
 
 module.exports = {
   getInfo,
   // validate,
   findOne,
   findOneWithName,
-  create
-  // update,
-  // destroy
+  create,
+  update,
+  destroy
 }

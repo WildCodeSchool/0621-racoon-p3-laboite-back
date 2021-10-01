@@ -23,7 +23,8 @@ teamRouter.post('/', (req, res) => {
       res.status(401).send('Member already exists')
     } else {
       console.log('body', req.body)
-      Team.create(req.body[0])
+      const { member_img, member_name, member_role } = req.body[0]
+      Team.create(member_img, member_name, member_role)
         .then(createdTeam => {
           res.status(201).json(createdTeam)
         })
@@ -61,16 +62,18 @@ teamRouter.post('/', (req, res) => {
 //     });
 // });
 
-// teamRouter.delete('/:id', (req, res) => {
-//   Team.destroy(req.params.id)
-//     .then((deleted) => {
-//       if (deleted) res.status(200).send('🎉 team deleted!');
-//       else res.status(404).send('team not found');
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(500).send('Error deleting a team');
-//     });
-// });
+teamRouter.delete('/:id', (req, res) => {
+  const member_id = req.params.id
+  console.log('member_id:', member_id)
+  Team.destroy(member_id)
+    .then(deleted => {
+      if (deleted) res.status(204).send('🎉 Member deleted!')
+      else res.status(404).send('Member not found')
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error deleting a Member')
+    })
+})
 
 module.exports = teamRouter
