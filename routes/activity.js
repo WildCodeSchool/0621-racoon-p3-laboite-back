@@ -35,4 +35,17 @@ activitiesRouter.post('/', (req, res) => {
     .then(result => res.json(result))
 })
 
+activitiesRouter.delete('/:id', (req, res) => {
+  activity
+    .destroy(req.params.id)
+    .then(deleted => {
+      if (deleted) res.status(200).send('Activity deleted')
+      else res.status(404).send('Activity not found')
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error deleting activity')
+    })
+})
+
 module.exports = activitiesRouter
