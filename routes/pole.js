@@ -14,16 +14,28 @@ poleRouter.get('/', (req, res) => {
   })
 })
 
+// Get all activities
+
+poleRouter.get('/', (req, res) => {
+  mysql.query('SELECT a.* FROM activity as a', (err, result) => {
+    if (err) {
+      res.status(500).send('Error retrieving data from database')
+    } else {
+      res.status(200).json(result)
+    }
+  })
+})
+
 // Get one pole
 
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
   mysql.query(
-    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
+    'SELECT p.*, a.activity_desc, a.activity_img, a.activity_title, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
     [poleId],
     (err, result) => {
       if (err) {
-        res.status(500).send('Error retrieving data from database')
+        res.status(500).send('Error retrieving data from database one pole')
       } else {
         // test if the id exist
         if (result.length === 0) {
@@ -52,7 +64,8 @@ poleRouter.get('/:id', (req, res) => {
             poleEntity.activities.push({
               id: result[i].id,
               activity_desc: result[i].activity_desc,
-              activity_img: result[i].activity_img
+              activity_img: result[i].activity_img,
+              activity_title: result[i].activity_title
             })
           }
         }
@@ -78,6 +91,7 @@ poleRouter.post('/', (req, res) => {
     req.body.pole_miniature_img,
     req.body.pole_catchphrase
   ]
+  console.table(req.body)
   const sql =
     'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   mysql.query(sql, poleData, (err, result) => {
@@ -88,10 +102,12 @@ poleRouter.post('/', (req, res) => {
       console.log(result)
       const poleId = result.insertId
       const sql2 =
-        'INSERT INTO activity (activity_desc, activity_img, pole_id) VALUES ?'
+        'INSERT INTO activity (activity_desc, activity_img, activity_title, pole_id) VALUES ?'
       const activityData = req.body.activity.map(services => [
-        services[0],
-        services[1],
+        // tableau avec les champs qui attendent les values add [values] in postman
+        services[0], //activity_desc
+        services[1], //activity_img
+        services[2], //activity_title
         poleId
       ])
       console.log(activityData)
@@ -106,6 +122,23 @@ poleRouter.post('/', (req, res) => {
   })
 })
 
+// Modify -------------------------------------------
+poleRouter.put('/:id', (req, res) => {
+  const poleId = req.params.id
+  const sql = `UPDATE pole SET ? WHERE id = ?`
+  console.log(req.body)
+  const values = [req.body, poleId]
+  mysql.query(sql, values, (err, result) => {
+    if (err) {
+      res.status(500).send('error modifying data')
+    } else {
+      console.table(result)
+      res.status(200).json(result)
+    }
+  })
+})
+
+// Delete ------------------------------------------
 poleRouter.delete('/:id', (req, res) => {
   const poleId = req.params.id
   mysql.query('DELETE FROM pole WHERE id = ? ', [poleId], err => {
