@@ -2,8 +2,7 @@ const mysql = require('../db-config')
 const { promise } = require('../db-config')
 const poleRouter = require('express').Router()
 
-// Get all poles
-
+// Get all poles without activities
 poleRouter.get('/', (req, res) => {
   mysql.query('SELECT p.* FROM pole as p', (err, result) => {
     if (err) {
@@ -17,17 +16,33 @@ poleRouter.get('/', (req, res) => {
 // Get all activities
 
 poleRouter.get('/', (req, res) => {
-  mysql.query('SELECT a.* FROM activity as a', (err, result) => {
-    if (err) {
-      res.status(500).send('Error retrieving data from database')
-    } else {
-      res.status(200).json(result)
+  mysql.query(
+    'SELECT p.*, a.activity_desc, a.activity_img, a.activity_title, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id',
+    (err, result) => {
+      if (err) {
+        res.status(500).send('Error retrieving data from database')
+      } else {
+        res.status(200).json(result)
+      }
     }
-  })
+  )
 })
 
-// Get one pole
+// Get poles with activities
+// poleRouter.get('/', (req, res) => {
+//   mysql.query(
+//     'SELECT p.*, a.activity_desc, a.activity_img, a.activity_title, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id',
+//     (err, result) => {
+//       if (err) {
+//         res.status(500).send('Error retrieving data from database')
+//       } else {
+//         res.status(200).json(result)
+//       }
+//     }
+//   )
+// })
 
+// Get one pole by ID
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
   mysql.query(
@@ -101,23 +116,23 @@ poleRouter.post('/', (req, res) => {
     } else {
       console.log(result)
       const poleId = result.insertId
-      const sql2 =
-        'INSERT INTO activity (activity_desc, activity_img, activity_title, pole_id) VALUES ?'
-      const activityData = req.body.activity.map(services => [
-        // tableau avec les champs qui attendent les values add [values] in postman
-        services[0], //activity_desc
-        services[1], //activity_img
-        services[2], //activity_title
-        poleId
-      ])
-      console.log(activityData)
-      mysql.query(sql2, [activityData], (err, result2) => {
-        if (err) {
-          res.status(500).send(err)
-        } else {
-          res.status(201).json({ ...req.body })
-        }
-      })
+      // const sql2 =
+      //   'INSERT INTO activity (activity_desc, activity_img, activity_title, pole_id) VALUES ?'
+      // const activityData = req.body.activity.map(services => [
+      //   // tableau avec les champs qui attendent les values add [values] in postman
+      //   services[0], //activity_desc
+      //   services[1], //activity_img
+      //   services[2], //activity_title
+      //   poleId
+      // ])
+      // console.log(activityData)
+      // mysql.query(sql2, [activityData], (err, result2) => {
+      //   if (err) {
+      //     res.status(500).send(err)
+      //   } else {
+      //     res.status(201).json({ id: poleId })
+      //   }
+      // })
     }
   })
 })
