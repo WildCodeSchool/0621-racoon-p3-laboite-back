@@ -34,9 +34,16 @@ const update = (id, newItem) => {
   return db.query('UPDATE activity SET ? WHERE id = ?', [newItem, id])
 }
 
+const destroy = id => {
+  return db
+    .query('DELETE FROM activity WHERE id = ?', [id])
+    .then(([result]) => result.affectedRows !== 0)
+}
+
 module.exports = {
   getInfo,
   getById,
   create,
-  update
+  update,
+  destroy
 }
