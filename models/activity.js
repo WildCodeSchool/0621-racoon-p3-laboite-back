@@ -11,7 +11,6 @@ const getInfo = () => {
 
 // Get by id
 const getById = id => {
-  4
   let sql = 'SELECT * FROM activity WHERE id = ?'
   return db.query(sql, [id]).then(([result]) => result[0])
 }
