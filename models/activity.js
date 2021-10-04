@@ -17,12 +17,11 @@ const getById = id => {
 }
 
 const create = (id, activity_title, activity_img, activity_desc, pole_id) => {
-  console.log('poulet03', activity_desc, activity_img, activity_title, pole_id)
   return db
     .query('INSERT INTO activity SET ?', {
-      activity_desc,
-      activity_img,
       activity_title,
+      activity_img,
+      activity_desc,
       pole_id
     })
     .then(([result]) => {
