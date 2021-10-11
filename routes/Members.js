@@ -2,9 +2,9 @@ const membersRouter = require('express').Router()
 const Member = require('../models/member')
 
 membersRouter.get('/', (req, res) => {
-  Member.getInfo(req.query)
-    .then(team => {
-      res.json(team)
+  Member.getInfo()
+    .then(members => {
+      res.json(members)
     })
 
     .catch(err => {
@@ -14,14 +14,19 @@ membersRouter.get('/', (req, res) => {
 })
 
 membersRouter.get('/:id', (req, res) => {
-  const id = req.params.id
-  Member.findOne(id).then(member => {
-    if (!member) {
-      res.status(404).json({ message: `Member not found` })
-    } else {
-      res.status(200).json(member)
-    }
-  })
+  const member_id = req.params.id
+  Member.findOne(member_id)
+    .then(member => {
+      if (!member) {
+        res.status(404).json({ message: `Member not found` })
+      } else {
+        res.status(200).json(member)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error retrieving team member from database')
+    })
 })
 
 membersRouter.post('/', (req, res) => {
@@ -56,24 +61,24 @@ membersRouter.put('/', (req, res) => {
   const member_id = req.body.member_id
   let existingTeam = null
   let validationErrors = null
-  Member.findOne(req.params.id)
-    .then(Team => {
-      existingTeam = Team
-      if (!existingTeam) return Promise.reject('RECORD_NOT_FOUND')
-      validationErrors = Team.validate(req.body, false)
-      if (validationErrors) return Promise.reject('INVALID_DATA')
-      return Team.update(req.params.id, req.body)
+  Member.findOne(member_id)
+    .then(member => {
+      existingTeam = member
+      if (!existingTeam) {
+        res.status(404).send(`team with id ${req.params.id} not found.`)
+      }
+      validationErrors = Member.validate(req.body, false)
+      if (validationErrors) {
+        res.status(422).json({ validationErrors: validationErrors.details })
+      }
+      Member.update(member_id, req.body)
     })
     .then(() => {
-      res.status(200).json({ ...existingTeam, ...req.body })
+      res.status(200).json({ ...req.body })
     })
     .catch(err => {
       console.error(err)
-      if (err === 'RECORD_NOT_FOUND')
-        res.status(404).send(`team with id ${req.params.id} not found.`)
-      else if (err === 'INVALID_DATA')
-        res.status(422).json({ validationErrors: validationErrors.details })
-      else res.status(500).send('Error updating a team.')
+      res.status(500).send('Error updating a team.')
     })
 })
 

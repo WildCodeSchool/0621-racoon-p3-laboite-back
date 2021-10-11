@@ -1,17 +1,19 @@
 const connection = require('../db-config')
 
-// const Joi = require('joi')
+const Joi = require('joi')
 
 const db = connection.promise()
 
 // Validate Data
-// const validate = (data, forCreation = true) => {
-//   const presence = forCreation ? 'required' : 'optional'
-//   return Joi.object({
-//     member_name: Joi.string().max(254).presence(presence),
-//     url_photo: Joi.string().max(255).presence(presence)
-//   }).validate(data, { abortEarly: false }).error
-// }
+const validate = (data, forCreation = true) => {
+  const presence = forCreation ? 'required' : 'optional'
+  return Joi.object({
+    member_id: Joi.number().presence(presence),
+    member_name: Joi.string().max(254).presence(presence),
+    member_img: Joi.string().max(255).presence(presence),
+    member_role: Joi.string().max(255).presence(presence)
+  }).validate(data, { abortEarly: false }).error
+}
 
 // Get member team
 const getInfo = () => {
@@ -19,9 +21,9 @@ const getInfo = () => {
   return db.query(sql).then(([results]) => results)
 }
 
-const findOne = id => {
+const findOne = member_id => {
   return db
-    .query('SELECT * FROM member WHERE id = ?', [id])
+    .query('SELECT * FROM member WHERE member_id = ?', [member_id])
     .then(([results]) => results[0])
 }
 
@@ -39,24 +41,27 @@ const create = (member_img, member_name, member_role) => {
       [member_img, member_name, member_role]
     )
     .then(([results]) => {
-      const id = results.insertId
-      return { id, member_img, member_name, member_role }
+      const member_id = results.insertId
+      return { member_id, member_img, member_name, member_role }
     })
 }
 
-const update = (id, newAttributes) => {
-  return db.query('UPDATE member SET ? WHERE id = ?', [newAttributes, id])
+const update = (member_id, newAttributes) => {
+  return db.query('UPDATE member SET ? WHERE member_id = ?', [
+    newAttributes,
+    member_id
+  ])
 }
 
-const destroy = id => {
+const destroy = member_id => {
   return db
-    .query('DELETE FROM member WHERE id = ?', [id])
+    .query('DELETE FROM member WHERE member_id = ?', [member_id])
     .then(([result]) => result.affectedRows !== 0)
 }
 
 module.exports = {
   getInfo,
-  // validate,
+  validate,
   findOne,
   findOneWithName,
   create,
