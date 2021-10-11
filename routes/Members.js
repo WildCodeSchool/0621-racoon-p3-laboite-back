@@ -15,13 +15,18 @@ membersRouter.get('/', (req, res) => {
 
 membersRouter.get('/:id', (req, res) => {
   const id = req.params.id
-  Member.findOne(id).then(member => {
-    if (!member) {
-      res.status(404).json({ message: `Member not found` })
-    } else {
-      res.status(200).json(member)
-    }
-  })
+  Member.findOne(id)
+    .then(member => {
+      if (!member) {
+        res.status(404).json({ message: `Member not found` })
+      } else {
+        res.status(200).json(member)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error retrieving team member from database')
+    })
 })
 
 membersRouter.post('/', (req, res) => {
