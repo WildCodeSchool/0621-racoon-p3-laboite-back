@@ -16,12 +16,12 @@ const db = connection.promise()
 // Get member team
 const getInfo = () => {
   let sql = 'SELECT * FROM member'
-  return db.query(sql).then(([results]) => results)
+  return db.query(sql).then(([results]) => console.log(results) || results)
 }
 
-const findOne = id => {
+const findOne = member_id => {
   return db
-    .query('SELECT * FROM member WHERE id = ?', [id])
+    .query('SELECT * FROM member WHERE member_id = ?', [member_id])
     .then(([results]) => results[0])
 }
 
@@ -39,18 +39,21 @@ const create = (member_img, member_name, member_role) => {
       [member_img, member_name, member_role]
     )
     .then(([results]) => {
-      const id = results.insertId
-      return { id, member_img, member_name, member_role }
+      const member_id = results.insertId
+      return { member_id, member_img, member_name, member_role }
     })
 }
 
-const update = (id, newAttributes) => {
-  return db.query('UPDATE member SET ? WHERE id = ?', [newAttributes, id])
+const update = (member_id, newAttributes) => {
+  return db.query('UPDATE member SET ? WHERE member_id = ?', [
+    newAttributes,
+    member_id
+  ])
 }
 
 const destroy = id => {
   return db
-    .query('DELETE FROM member WHERE id = ?', [id])
+    .query('DELETE FROM member WHERE member_id = ?', [member_id])
     .then(([result]) => result.affectedRows !== 0)
 }
 
