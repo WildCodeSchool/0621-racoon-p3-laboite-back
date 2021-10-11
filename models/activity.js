@@ -11,18 +11,16 @@ const getInfo = () => {
 
 // Get by id
 const getById = id => {
-  4
   let sql = 'SELECT * FROM activity WHERE id = ?'
   return db.query(sql, [id]).then(([result]) => result[0])
 }
 
 const create = (id, activity_title, activity_img, activity_desc, pole_id) => {
-  console.log('poulet03', activity_desc, activity_img, activity_title, pole_id)
   return db
     .query('INSERT INTO activity SET ?', {
-      activity_desc,
-      activity_img,
       activity_title,
+      activity_img,
+      activity_desc,
       pole_id
     })
     .then(([result]) => {
