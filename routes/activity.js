@@ -1,23 +1,6 @@
 const activitiesRouter = require('express').Router()
 const activity = require('../models/activity')
-const multer = require('multer')
-const path = require('path')
 // const upload = multer({ dest: '../public/images' })
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, '../public/images')
-  },
-  filename: (req, file, cb) => {
-    console.log(file)
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
-})
-
-const upload = multer({
-  storage: storage
-})
-
 
 activitiesRouter.get('/', (req, res) => {
   activity
@@ -44,13 +27,12 @@ activitiesRouter.get('/:id', (req, res) => {
     })
 })
 
-activitiesRouter.post('/', upload.single('activity_img'), (req, res) => {
+activitiesRouter.post('/', (req, res) => {
   console.log('poulet01', req.file);
   const { id, activity_title, activity_img, activity_desc, pole } = req.body
-  // const { activity_img } = req.file
-  // activity
-  //   .create(id, activity_title, activity_img, activity_desc, pole)
-  //   .then(result => res.json(result))
+  activity
+    .create(id, activity_title, activity_img, activity_desc, pole)
+    .then(result => res.json(result))
 })
 
 activitiesRouter.put('/:id', (req, res) => {
