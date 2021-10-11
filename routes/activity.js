@@ -1,5 +1,6 @@
 const activitiesRouter = require('express').Router()
 const activity = require('../models/activity')
+// const upload = multer({ dest: '../public/images' })
 
 activitiesRouter.get('/', (req, res) => {
   activity
@@ -27,12 +28,19 @@ activitiesRouter.get('/:id', (req, res) => {
 })
 
 activitiesRouter.post('/', (req, res) => {
+  console.log('poulet01', req.file);
   const { id, activity_title, activity_img, activity_desc, pole } = req.body
-  let validationErrors = null
-  console.log(req.body)
   activity
     .create(id, activity_title, activity_img, activity_desc, pole)
     .then(result => res.json(result))
+})
+
+activitiesRouter.put('/:id', (req, res) => {
+  const activityId = req.params.id
+  activity
+    .update(activityId, req.body)
+    .then(() => res.status(200).json(req.body))
+    .catch(err => res.status(500).send('Error modifying data'))
 })
 
 activitiesRouter.delete('/:id', (req, res) => {
