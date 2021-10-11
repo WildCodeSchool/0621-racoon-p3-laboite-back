@@ -48,9 +48,9 @@ activitiesRouter.post('/', upload.single('activity_img'), (req, res) => {
   console.log('poulet01', req.file);
   const { id, activity_title, activity_img, activity_desc, pole } = req.body
   // const { activity_img } = req.file
-  // activity
-  //   .create(id, activity_title, activity_img, activity_desc, pole)
-  //   .then(result => res.json(result))
+  activity
+    .create(id, activity_title, activity_img, activity_desc, pole)
+    .then(result => res.json(result))
 })
 
 activitiesRouter.put('/:id', (req, res) => {
