@@ -1,9 +1,8 @@
 const partnershipRouter = require('express').Router()
-const partnership = require('../models/partnership')
+const Partnership = require('../models/partnership')
 
 partnershipRouter.get('/', (req, res) => {
-  partnership
-    .getInfo()
+  Partnership.getInfo()
     .then(partnerPage => {
       res.status(200).json(partnerPage)
     })
