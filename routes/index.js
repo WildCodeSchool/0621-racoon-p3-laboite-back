@@ -9,7 +9,7 @@ const activitiesRouter = require('./activity')
 
 // add your middware route: app.use('url', myRouter)
 const setupRoutes = app => {
-  app.use('/pole', poleRouter)
+  app.use('/poles', poleRouter)
   app.use('/concept', conceptRouter)
   app.use('/contact', contactRouter)
   app.use('/social', socialRouter)
