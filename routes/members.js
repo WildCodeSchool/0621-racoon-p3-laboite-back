@@ -46,11 +46,11 @@ membersRouter.post('/', (req, res) => {
           .then(createdTeam => {
             res
               .status(201)
-              .json({ message: 'Member Create !', member: createdTeam })
+              .json({ message: 'Member Created !', member: createdTeam })
           })
           .catch(err => {
             console.error(err)
-            res.status(500).json({ message: `Error saving the team` })
+            res.status(500).json({ message: `Error saving the member` })
           })
       }
     })

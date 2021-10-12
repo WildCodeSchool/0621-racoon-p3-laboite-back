@@ -15,24 +15,25 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error
 }
 
-// Get member team
+// Get team members
 const getInfo = () => {
   let sql = 'SELECT * FROM member'
   return db.query(sql).then(([results]) => console.log(results) || results)
 }
 
+// Get member from id
 const findOne = member_id => {
   return db
     .query('SELECT * FROM member WHERE member_id = ?', [member_id])
     .then(([results]) => results[0])
 }
-
+// Get member from name
 const findOneWithName = name => {
   return db
     .query('SELECT * FROM member WHERE member_name LIKE ?', [name])
     .then(([results]) => results[0])
 }
-
+// Create member
 const create = (member_img, member_name, member_role) => {
   console.log(member_img, member_name, member_role)
   return db
@@ -45,14 +46,14 @@ const create = (member_img, member_name, member_role) => {
       return { member_id, member_img, member_name, member_role }
     })
 }
-
+// Update member
 const update = (member_id, newAttributes) => {
   return db.query('UPDATE member SET ? WHERE member_id = ?', [
     newAttributes,
     member_id
   ])
 }
-
+// Delete member
 const destroy = member_id => {
   return db
     .query('DELETE FROM member WHERE member_id = ?', [member_id])
