@@ -1,9 +1,8 @@
 const mysql = require('../db-config')
-const { promise } = require('../db-config')
+// const { promise } = require('../db-config')
 const poleRouter = require('express').Router()
 
-// Get all poles
-
+// Get all poles without activities
 poleRouter.get('/', (req, res) => {
   mysql.query('SELECT p.* FROM pole as p', (err, result) => {
     if (err) {
@@ -14,16 +13,27 @@ poleRouter.get('/', (req, res) => {
   })
 })
 
-// Get one pole
+// Get one pole for admin update
+poleRouter.get('/admin/:id', (req, res) => {
+  const poleId = req.params.id
+  mysql.query('SELECT * FROM pole WHERE id = ?', [poleId], (err, result) => {
+    if (err) {
+      res.status(500).send('Error retrieving data from database')
+    } else {
+      res.status(200).json(result)
+    }
+  })
+})
 
+// Get one pole by ID
 poleRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
   mysql.query(
-    'SELECT p.*, a.activity_desc, a.activity_img, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
+    'SELECT p.*, a.activity_desc, a.activity_img, a.activity_title, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
     [poleId],
     (err, result) => {
       if (err) {
-        res.status(500).send('Error retrieving data from database')
+        res.status(500).send('Error retrieving data from database one pole')
       } else {
         // test if the id exist
         if (result.length === 0) {
@@ -52,7 +62,8 @@ poleRouter.get('/:id', (req, res) => {
             poleEntity.activities.push({
               id: result[i].id,
               activity_desc: result[i].activity_desc,
-              activity_img: result[i].activity_img
+              activity_img: result[i].activity_img,
+              activity_title: result[i].activity_title
             })
           }
         }
@@ -63,7 +74,6 @@ poleRouter.get('/:id', (req, res) => {
 })
 
 // Post ---------------------------------------------------------
-
 poleRouter.post('/', (req, res) => {
   const poleData = [
     req.body.pole_name,
@@ -78,6 +88,7 @@ poleRouter.post('/', (req, res) => {
     req.body.pole_miniature_img,
     req.body.pole_catchphrase
   ]
+  console.table(req.body)
   const sql =
     'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   mysql.query(sql, poleData, (err, result) => {
@@ -85,27 +96,30 @@ poleRouter.post('/', (req, res) => {
       console.log(err)
       res.status(500).send('Error from database')
     } else {
-      console.log(result)
-      const poleId = result.insertId
-      const sql2 =
-        'INSERT INTO activity (activity_desc, activity_img, pole_id) VALUES ?'
-      const activityData = req.body.activity.map(services => [
-        services[0],
-        services[1],
-        poleId
-      ])
-      console.log(activityData)
-      mysql.query(sql2, [activityData], (err, result2) => {
-        if (err) {
-          res.status(500).send(err)
-        } else {
-          res.status(201).json({ ...req.body })
-        }
-      })
+      console.table(result)
+      res.status(201).json(result)
     }
   })
 })
 
+// Modify -------------------------------------------
+poleRouter.put('/:id', (req, res) => {
+  const poleId = req.params.id
+  const sql = `UPDATE pole SET ? WHERE id = ?`
+  console.log(req.body)
+  console.log(req.params)
+  const values = [req.body, poleId]
+  mysql.query(sql, values, (err, result) => {
+    if (err) {
+      res.status(500).send('error modifying data')
+    } else {
+      console.table(result)
+      res.status(200).json(result)
+    }
+  })
+})
+
+// Delete ------------------------------------------
 poleRouter.delete('/:id', (req, res) => {
   const poleId = req.params.id
   mysql.query('DELETE FROM pole WHERE id = ? ', [poleId], err => {
