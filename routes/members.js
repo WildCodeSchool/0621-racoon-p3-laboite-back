@@ -57,21 +57,20 @@ membersRouter.post('/', (req, res) => {
   }
 })
 
-membersRouter.put('/', (req, res) => {
-  const member_id = req.body.member_id
-  let existingTeam = null
+membersRouter.put('/:id', (req, res) => {
+  const member_id = req.params.id
   let validationErrors = null
   Member.findOne(member_id)
     .then(member => {
-      existingTeam = member
-      if (!existingTeam) {
-        res.status(404).send(`team with id ${req.params.id} not found.`)
+      if (!member) {
+        res.status(404).send(`team with id ${member_id} not found.`)
       }
       validationErrors = Member.validate(req.body, false)
       if (validationErrors) {
         res.status(422).json({ validationErrors: validationErrors.details })
+      } else {
+        Member.update(member_id, req.body)
       }
-      Member.update(member_id, req.body)
     })
     .then(() => {
       res.status(200).json({ ...req.body })

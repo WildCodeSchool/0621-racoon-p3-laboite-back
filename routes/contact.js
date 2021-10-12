@@ -14,10 +14,10 @@ contactRouter.get('/', (req, res) => {
 })
 
 contactRouter.post('/sendmail', (req, res) => {
-  const name = req.body[0].name
-  const email = req.body[0].email
-  const message = req.body[0].message
-  console.log(req.body[0], req.body[0].name)
+  const name = req.body.name
+  const email = req.body.email
+  const message = req.body.message
+  console.log(req.body, req.body.name)
   const mailData = {
     from: name,
     to: 'wcs.dev.boitedacote@gmail.com',
@@ -34,7 +34,7 @@ contactRouter.post('/sendmail', (req, res) => {
         res.json({ status: 'Message Sent' })
       }
     })
-    .then(() => res.status(200).json('Mail envoyé !}'))
+    .then(() => res.status(200).send('Mail envoyé !'))
 })
 
 module.exports = contactRouter

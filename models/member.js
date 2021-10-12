@@ -11,7 +11,7 @@ const validate = (data, forCreation = true) => {
     member_id: Joi.number().presence(presence),
     member_name: Joi.string().max(254).presence(presence),
     member_img: Joi.string().max(255).presence(presence),
-    member_role: Joi.string().max(255).presence(presence)
+    member_role: Joi.string().max(255).allow('', null)
   }).validate(data, { abortEarly: false }).error
 }
 
