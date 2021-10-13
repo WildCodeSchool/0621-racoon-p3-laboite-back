@@ -31,13 +31,10 @@ const upload = multer({
   storage: storage
 })
 
-app.post('/upload', upload.single('activity_img'), (req, res) => {
+app.post('/upload', upload.fields([{name: 'pole_banner'}, {name: 'pole_func_img'}, {name: 'pole_miniature_img'}, {name:'activity_img'}]), (req, res) => {
   res.status(200).json('Uploaded')
 })
 
-app.post('/upload', upload.single('pole_banner'), (req, res) => {
-  res.status(200).json('Uploaded')
-})
 
 // Route middleware
 app.use(cors())
