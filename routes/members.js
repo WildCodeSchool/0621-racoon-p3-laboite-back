@@ -9,7 +9,9 @@ membersRouter.get('/', (req, res) => {
 
     .catch(err => {
       console.log(err)
-      res.status(500).send('Error retrieving team member from database')
+      res
+        .status(500)
+        .json({ message: 'Error retrieving team member from database' })
     })
 })
 
@@ -57,28 +59,33 @@ membersRouter.post('/', (req, res) => {
   }
 })
 
-membersRouter.put('/', (req, res) => {
-  const member_id = req.body.member_id
-  let existingTeam = null
+membersRouter.put('/:id', (req, res) => {
+  const member_id = req.params.id
   let validationErrors = null
   Member.findOne(member_id)
     .then(member => {
-      existingTeam = member
-      if (!existingTeam) {
-        res.status(404).send(`team with id ${req.params.id} not found.`)
+      if (!member) {
+        res
+          .status(404)
+          .json({ message: `Member with id ${member_id} not found.` })
       }
+      console.log(req.body)
       validationErrors = Member.validate(req.body, false)
       if (validationErrors) {
         res.status(422).json({ validationErrors: validationErrors.details })
+      } else {
+        Member.update(member_id, req.body)
       }
-      Member.update(member_id, req.body)
     })
+
     .then(() => {
-      res.status(200).json({ ...req.body })
+      res
+        .status(200)
+        .json({ message: 'Member updated !', member: { ...req.body } })
     })
     .catch(err => {
       console.error(err)
-      res.status(500).send('Error updating a team.')
+      res.status(500).json({ message: 'Error updating a member.' })
     })
 })
 
