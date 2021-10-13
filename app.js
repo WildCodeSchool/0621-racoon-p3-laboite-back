@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
     cb(null, './public/images')
   },
   filename: (req, file, cb) => {
-    console.log('YOLO file', file)
     cb(null, file.originalname)
   }
 })
