@@ -32,7 +32,7 @@ membersRouter.get('/:id', (req, res) => {
 })
 
 membersRouter.post('/', (req, res) => {
-  const { member_name } = req.body[0]
+  const { member_name } = req.body
   console.log('memName', member_name)
   if (!member_name) res.status(401).json({ message: 'Name is required' })
   else {
@@ -42,7 +42,7 @@ membersRouter.post('/', (req, res) => {
         res.status(401).json({ message: `Member already exists` })
       } else {
         console.log('body', req.body)
-        const { member_img, member_name, member_role } = req.body[0]
+        const { member_img, member_name, member_role } = req.body
         console.log('body data', member_img, member_name, member_role)
         Member.create(member_img, member_name, member_role)
           .then(createdTeam => {
