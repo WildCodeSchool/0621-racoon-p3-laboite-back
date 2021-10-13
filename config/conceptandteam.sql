@@ -79,7 +79,7 @@ CREATE TABLE `member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `team`
+-- Dumping data for table `member`
 --
 
 LOCK TABLES `member` WRITE;
