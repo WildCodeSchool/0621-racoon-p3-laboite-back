@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bac
 -- ------------------------------------------------------
--- Server version	8.0.26
+-- Server version	8.0.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -39,7 +39,7 @@ CREATE TABLE `social_net` (
 
 LOCK TABLES `social_net` WRITE;
 /*!40000 ALTER TABLE `social_net` DISABLE KEYS */;
-INSERT INTO `social_net` VALUES (1,'facebook','http://localhost:4000/static/images/fbIcon.svg','http://localhost:4000/static/images/fbAtlIcon.svg','https://www.facebook.com/zerochomeurLD/'),(2,'instagram','http://localhost:4000/static/images/instaIcon.svg','http://localhost:4000/static/images/instaAtlIcon.svg','https://www.instagram.com/tzcld_3_cites/?hl=fr');
+INSERT INTO `social_net` VALUES (1,'facebook','fbIcon.svg','fbAtlIcon.svg','https://www.facebook.com/zerochomeurLD/'),(2,'instagram','instaIcon.svg','instaAtlIcon.svg','https://www.instagram.com/tzcld_3_cites/?hl=fr');
 /*!40000 ALTER TABLE `social_net` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-30 11:25:56
+-- Dump completed on 2021-10-11 16:45:12
