@@ -62,30 +62,30 @@ INSERT INTO `concept` VALUES (1,NULL,NULL,'UNE ENTREPRISE PAS COMME LES AUTRES �
 UNLOCK TABLES;
 
 --
--- Table structure for table `team`
+-- Table structure for table `member`
 --
 
-DROP TABLE IF EXISTS `team`;
+DROP TABLE IF EXISTS `member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `team` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `member` (
+  `member_id` int NOT NULL AUTO_INCREMENT,
   `member_img` varchar(200) DEFAULT NULL,
   `member_name` text,
   `member_role` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY `id_UNIQUE` (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `team`
+-- Dumping data for table `member`
 --
 
-LOCK TABLES `team` WRITE;
-/*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES (1,'sylvie-potter.jpg','Sylvie Vannier','Responsable principal'),(2,NULL,'Thierry Petonnet','Président');
-/*!40000 ALTER TABLE `team` ENABLE KEYS */;
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES (1,'sylvie-potter.jpg','Sylvie Vannier','Responsable principal'),(2,NULL,'Thierry Petonnet','Président');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser')
 const { setupRoutes } = require('./routes')
 const connection = require('./db-config.js')
 const app = express()
-const path = require('path')
 const multer = require('multer')
 
 const port = process.env.PORT || 4000
@@ -18,7 +17,6 @@ connection.connect(err => {
     console.log('connected to database with threadId :  ' + connection.threadId)
   }
 })
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -34,7 +32,7 @@ const upload = multer({
   storage: storage
 })
 
-app.post('/upload', upload.single('activity_img'), (req, res) => {
+app.post('/upload', upload.fields([{name: 'activity_img'}, {name: 'pole_banner'}, {name: 'pole_func_img'}, {name: 'pole_miniature_img'}, {name: 'member_img'}]), (req, res) => {
   res.status(200).json('Uploaded')
 })
 
