@@ -18,6 +18,7 @@ connection.connect(err => {
   }
 })
 
+//multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/images')
@@ -28,8 +29,14 @@ const storage = multer.diskStorage({
   }
 })
 
+//multer upload
 const upload = multer({
   storage: storage
+  // fileFilter(req, file, cb) {
+  //   if(!file.fieldname.originalname.match(/\.(jpeg|jpg)$/)) {
+  //     return cb(new Error('.jpg or .jpeg allowed'))
+  //   }
+  // }
 })
 
 app.post('/upload', upload.fields([{name: 'activity_img'}, {name: 'pole_banner'}, {name: 'pole_func_img'}, {name: 'pole_miniature_img'}, {name: 'member_img'}]), (req, res) => {
