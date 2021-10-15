@@ -51,6 +51,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/static', express.static(__dirname + '/public'))
 
+// app.get('/partenaires', (req, res) =>{
+//   res.status(200).send('Je suis dans le /')
+// })
+
 setupRoutes(app)
 
 app.listen(port, () => {

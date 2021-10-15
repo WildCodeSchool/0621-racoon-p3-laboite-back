@@ -1,8 +1,8 @@
 const partnersRouter = require('express').Router()
-const partners = require('../models/partners')
+const Partners = require('../models/partners')
 
 partnersRouter.get('/', (req, res) => {
-    partners.getInfo()
+  Partners.getInfo()
     .then(partner => {
       res.status(200).json(partner)
     })
