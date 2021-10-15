@@ -23,11 +23,11 @@ DROP TABLE IF EXISTS `partner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `partner` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `partner_id` int NOT NULL AUTO_INCREMENT,
   `partner_img` varchar(200) DEFAULT NULL,
   `partner_name` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  PRIMARY KEY (`partner_id`),
+  UNIQUE KEY `id_UNIQUE` (`partner_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-15 10:17:00
+-- Dump completed on 2021-10-15 10:36:54
