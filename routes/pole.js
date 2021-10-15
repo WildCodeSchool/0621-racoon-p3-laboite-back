@@ -58,7 +58,6 @@ poleRouter.get('/:id', (req, res) => {
         }
         for (let i = 0; i < result.length; i++) {
           if (result[i].pole_id) {
-            console.log(result)
             poleEntity.activities.push({
               id: result[i].id,
               activity_desc: result[i].activity_desc,
@@ -93,7 +92,6 @@ poleRouter.post('/', (req, res) => {
     'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   mysql.query(sql, poleData, (err, result) => {
     if (err) {
-      console.log(err)
       res.status(500).send('Error from database')
     } else {
       console.table(result)
@@ -106,8 +104,6 @@ poleRouter.post('/', (req, res) => {
 poleRouter.put('/:id', (req, res) => {
   const poleId = req.params.id
   const sql = `UPDATE pole SET ? WHERE id = ?`
-  console.log(req.body)
-  console.log(req.params)
   const values = [req.body, poleId]
   mysql.query(sql, values, (err, result) => {
     if (err) {
