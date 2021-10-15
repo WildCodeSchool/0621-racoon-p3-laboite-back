@@ -148,7 +148,7 @@ VALUES
     'conciergerie-mini.jpg',
     'Services aux particuliers et aux entreprises'
   ),(
-    32,
+    2,
     'Pôle Végétal',
     'Pôle Végétal',
     'leaf',
@@ -161,8 +161,8 @@ VALUES
     'vegetal-mini.jpg',
     'Grands jardins et maraîchage'
   ),(
-    33,
-    'Pôle Recyclerie Créative',
+    3,
+    'Pôle Recyclerie',
     'La Recyclerie',
     'tools',
     'En partenariat avec le SMICTOM et la Communauté de Communes Bléré-Val de Cher',
