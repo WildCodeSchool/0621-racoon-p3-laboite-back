@@ -33,22 +33,38 @@ activitiesRouter.get('/:id', (req, res) => {
 })
 
 activitiesRouter.post('/', verifyToken, (req, res) => {
-  const { id, activity_title, activity_img, activity_desc, pole } = req.body
-  activity
-    .create(id, activity_title, activity_img, activity_desc, pole)
-    .then(result =>
-      res.status(201).json({ message: 'Activity Created !', activity: result })
-    )
-    .catch(err => {
-      console.error(err)
-      res.status(500).json({ message: `Error saving the activity` })
+  const { id, activity_title, activity_img, activity_desc, pole_id } = req.body
+
+  if (!activity_title)
+    res.status(401).json({ message: 'Activity title is required' })
+  else {
+    activity.findOneWithTitle(activity_title).then(duplicateActivity => {
+      console.log('findActivity', duplicateActivity)
+      if (duplicateActivity) {
+        res.status(401).json({ message: `Activity already exists` })
+      } else {
+        console.log('body', req.body)
+
+        activity
+          .create(id, activity_title, activity_img, activity_desc, pole_id)
+          .then(result =>
+            res
+              .status(201)
+              .json({ message: 'Activity Created !', activity: result })
+          )
+          .catch(err => {
+            console.error(err)
+            res.status(500).json({ message: `Error saving the activity` })
+          })
+      }
     })
+  }
 })
 
 activitiesRouter.put('/:id', verifyToken, (req, res) => {
-  const activityId = req.params.id
+  const activity_id = req.params.id
   activity
-    .update(activityId, req.body)
+    .update(activity_id, req.body)
     .then(() =>
       res
         .status(200)

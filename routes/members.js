@@ -40,7 +40,7 @@ membersRouter.post('/', verifyToken, (req, res) => {
   if (!member_name) res.status(401).json({ message: 'Name is required' })
   else {
     Member.findOneWithName(member_name).then(user => {
-      console.log('finUser', user)
+      console.log('findUser', user)
       if (user) {
         res.status(401).json({ message: `Member already exists` })
       } else {
