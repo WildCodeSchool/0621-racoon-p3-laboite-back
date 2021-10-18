@@ -1,5 +1,6 @@
 const membersRouter = require('express').Router()
 const Member = require('../models/member')
+const { verifyToken } = require('../helpers/Jwt')
 
 membersRouter.get('/', (req, res) => {
   Member.getInfo()
@@ -31,7 +32,7 @@ membersRouter.get('/:id', (req, res) => {
     })
 })
 
-membersRouter.post('/', (req, res) => {
+membersRouter.post('/', verifyToken, (req, res) => {
   const { member_name } = req.body
   console.log('memName', member_name)
   if (!member_name) res.status(401).json({ message: 'Name is required' })
@@ -59,7 +60,7 @@ membersRouter.post('/', (req, res) => {
   }
 })
 
-membersRouter.put('/:id', (req, res) => {
+membersRouter.put('/:id', verifyToken, (req, res) => {
   const member_id = req.params.id
   let validationErrors = null
   Member.findOne(member_id)
@@ -89,7 +90,7 @@ membersRouter.put('/:id', (req, res) => {
     })
 })
 
-membersRouter.delete('/:id', (req, res) => {
+membersRouter.delete('/:id', verifyToken, (req, res) => {
   const member_id = req.params.id
   console.log('member_id:', member_id)
   Member.destroy(member_id)

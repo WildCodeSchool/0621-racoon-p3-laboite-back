@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 
+// Crée un JWT
 const calculateToken = (userEmail = '', user_id = '') => {
   return jwt.sign(
     { userEmail: userEmail, user_id: user_id },
@@ -10,6 +11,7 @@ const calculateToken = (userEmail = '', user_id = '') => {
   )
 }
 
+// Middleware pour checker le JWT
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]

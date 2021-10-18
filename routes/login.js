@@ -1,8 +1,11 @@
 const loginRouter = require('express').Router()
 const Login = require('../models/login')
-const { hashPassword, verifyPassword } = require('../helpers/crypte')
+const { hashPassword, verifyPassword } = require('../helpers/argon2')
 const { calculateToken, verifyToken } = require('../helpers/Jwt')
 
+//-------------------------------------------------------------------------
+
+// Route temporaire pour crée un admin avec un password hasher
 loginRouter.post('/addAdmin', (req, res) => {
   const { email, password } = req.body
   hashPassword(password)
@@ -16,6 +19,9 @@ loginRouter.post('/addAdmin', (req, res) => {
     })
 })
 
+//-----------------------------------------------------------------------
+
+// Route pour le LOGIN
 loginRouter.post('/', (req, res) => {
   const { email, password } = req.body
   let validationErrors = null
@@ -37,7 +43,8 @@ loginRouter.post('/', (req, res) => {
                 res.status(200).json({
                   auth: true,
                   accessToken: accessToken,
-                  result: { id: user.id, email: user.user_email }
+                  user_id: user.id,
+                  user_email: user.user_email
                 })
               } else {
                 res
@@ -54,6 +61,9 @@ loginRouter.post('/', (req, res) => {
   }
 })
 
+//-------------------------------------------------------------------------
+
+// Route temporaire pour checker le JWT
 loginRouter.get('/isUserAuth', verifyToken, async (req, res) => {
   try {
     return res.status(200).json('Your Authenticated!')
