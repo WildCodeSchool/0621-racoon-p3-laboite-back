@@ -28,7 +28,9 @@ membersRouter.get('/:id', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Error retrieving team member from database')
+      res
+        .status(500)
+        .json({ message: 'Error retrieving team member from database' })
     })
 })
 
@@ -78,7 +80,6 @@ membersRouter.put('/:id', verifyToken, (req, res) => {
         Member.update(member_id, req.body)
       }
     })
-
     .then(() => {
       res
         .status(200)
