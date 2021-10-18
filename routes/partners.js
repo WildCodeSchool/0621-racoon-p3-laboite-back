@@ -1,9 +1,8 @@
 const partnersRouter = require('express').Router()
 const Partners = require('../models/partners')
+const { verifyToken } = require('../helpers/Jwt')
 
-
-
-// Get all 
+// Get all
 
 partnersRouter.get('/', (req, res) => {
   Partners.getInfo()
@@ -33,8 +32,8 @@ partnersRouter.get('/:id', (req, res) => {
     })
 })
 
-//Add 
-partnersRouter.post('/', (req, res) => {
+//Add
+partnersRouter.post('/', verifyToken, (req, res) => {
   // const { partner_name } = req.body
   // console.log('partnerName', partner_name)
   // if (!partner_name) res.status(401).json({ message: 'Name is required' })
@@ -45,25 +44,24 @@ partnersRouter.post('/', (req, res) => {
   //       res.status(401).json({ message: `partner already exists` })
   //     } else {
   //       console.log('body', req.body)
-        const { partner_img, partner_name } = req.body
-        console.log('body data', partner_img, partner_name)
-        Partners.create(partner_img, partner_name)
-          .then(createdPartner => {
-            res
-              .status(201)
-              .json({ message: 'Partner Created !', partner: createdPartner })
-          })
-          .catch(err => {
-            console.error(err)
-            res.status(500).json({ message: `Error saving the partner` })
-          })
-      
+  const { partner_img, partner_name } = req.body
+  console.log('body data', partner_img, partner_name)
+  Partners.create(partner_img, partner_name)
+    .then(createdPartner => {
+      res
+        .status(201)
+        .json({ message: 'Partner Created !', partner: createdPartner })
     })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ message: `Error saving the partner` })
+    })
+})
 //   }
 // })
 
 //Modify
-partnersRouter.put('/:id', (req, res) => {
+partnersRouter.put('/:id', verifyToken, (req, res) => {
   const partner_id = req.params.id
   let validationErrors = null
   Partners.findOne(partner_id)
@@ -93,9 +91,8 @@ partnersRouter.put('/:id', (req, res) => {
     })
 })
 
-
 //Delete
-partnersRouter.delete('/:id', (req, res) => {
+partnersRouter.delete('/:id', verifyToken, (req, res) => {
   const partner_id = req.params.id
   console.log('partner_id:', partner_id)
   Partners.destroy(partner_id)
@@ -108,6 +105,5 @@ partnersRouter.delete('/:id', (req, res) => {
       res.status(500).json({ message: `Error deleting a partner` })
     })
 })
-
 
 module.exports = partnersRouter

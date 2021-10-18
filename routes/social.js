@@ -1,6 +1,7 @@
 const socialRouter = require('express').Router()
 const Social = require('../models/social')
 
+// récupère les icons de reseaux sociaux
 socialRouter.get('/', (req, res) => {
   Social.getInfo()
     .then(social => {
