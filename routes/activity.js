@@ -1,6 +1,7 @@
 const activitiesRouter = require('express').Router()
 const activity = require('../models/activity')
 // const upload = multer({ dest: '../public/images' })
+const { verifyToken } = require('../helpers/Jwt')
 
 activitiesRouter.get('/', (req, res) => {
   activity
@@ -27,15 +28,15 @@ activitiesRouter.get('/:id', (req, res) => {
     })
 })
 
-activitiesRouter.post('/', (req, res) => {
-  console.log('poulet01', req.file);
+activitiesRouter.post('/', verifyToken, (req, res) => {
+  console.log('poulet01', req.file)
   const { id, activity_title, activity_img, activity_desc, pole } = req.body
   activity
     .create(id, activity_title, activity_img, activity_desc, pole)
     .then(result => res.json(result))
 })
 
-activitiesRouter.put('/:id', (req, res) => {
+activitiesRouter.put('/:id', verifyToken, (req, res) => {
   const activityId = req.params.id
   activity
     .update(activityId, req.body)
@@ -43,7 +44,7 @@ activitiesRouter.put('/:id', (req, res) => {
     .catch(err => res.status(500).send('Error modifying data'))
 })
 
-activitiesRouter.delete('/:id', (req, res) => {
+activitiesRouter.delete('/:id', verifyToken, (req, res) => {
   activity
     .destroy(req.params.id)
     .then(deleted => {

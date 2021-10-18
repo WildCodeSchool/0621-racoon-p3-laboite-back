@@ -1,6 +1,7 @@
 const mysql = require('../db-config')
 // const { promise } = require('../db-config')
 const poleRouter = require('express').Router()
+const { verifyToken } = require('../helpers/Jwt')
 
 // Get all poles without activities
 poleRouter.get('/', (req, res) => {
@@ -14,7 +15,7 @@ poleRouter.get('/', (req, res) => {
 })
 
 // Get one pole for admin update
-poleRouter.get('/admin/:id', (req, res) => {
+poleRouter.get('/admin/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
   mysql.query('SELECT * FROM pole WHERE id = ?', [poleId], (err, result) => {
     if (err) {
@@ -73,7 +74,7 @@ poleRouter.get('/:id', (req, res) => {
 })
 
 // Post ---------------------------------------------------------
-poleRouter.post('/', (req, res) => {
+poleRouter.post('/', verifyToken, (req, res) => {
   const poleData = [
     req.body.pole_name,
     req.body.pole_title,
@@ -101,7 +102,7 @@ poleRouter.post('/', (req, res) => {
 })
 
 // Modify -------------------------------------------
-poleRouter.put('/:id', (req, res) => {
+poleRouter.put('/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
   const sql = `UPDATE pole SET ? WHERE id = ?`
   const values = [req.body, poleId]
@@ -116,7 +117,7 @@ poleRouter.put('/:id', (req, res) => {
 })
 
 // Delete ------------------------------------------
-poleRouter.delete('/:id', (req, res) => {
+poleRouter.delete('/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
   mysql.query('DELETE FROM pole WHERE id = ? ', [poleId], err => {
     if (err) {
