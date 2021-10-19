@@ -15,6 +15,13 @@ const getById = id => {
   return db.query(sql, [id]).then(([result]) => result[0])
 }
 
+// Get activity from title
+const findOneWithTitle = title => {
+  return db
+    .query('SELECT * FROM activity WHERE activity_title LIKE ?', [title])
+    .then(([results]) => results[0])
+}
+
 const create = (id, activity_title, activity_img, activity_desc, pole_id) => {
   return db
     .query('INSERT INTO activity SET ?', {
@@ -42,6 +49,7 @@ const destroy = id => {
 module.exports = {
   getInfo,
   getById,
+  findOneWithTitle,
   create,
   update,
   destroy

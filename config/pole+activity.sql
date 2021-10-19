@@ -43,43 +43,43 @@ VALUES
     9,
     'Pack « micro-jardin » : installation de bacs à hauteur chez les particuliers avec plantes de leur choix.',
     'vegetal-services-01.jpeg',
-    32,
+    2,
     'Pack \"micro-jardins\"'
   ),(
     10,
     'Pack « jardin des senteurs » :  préparation et mise à disposition de bacs à herbes aromatiques.',
     'vegetal-services-02.jpeg',
-    32,
+    2,
     'Pack \"jardin des senteurs\"'
   ),(
     11,
     'Gestion des déchets verts :  collecte des branches coupées, des feuilles, des déchets alimentaires pour compost…',
     'vegetal-services-03.jpg',
-    32,
+    2,
     'Gestion des déchets verts'
   ),(
     12,
     'Gardiennage de plantes pendant les congés ou mise en serre en hiver.',
     'vegetal-services-04.jpg',
-    32,
+    2,
     'Gardiennage de plantes'
   ),(
     13,
     'Location de petit outillage',
     'recyclerie-services-01.jpeg',
-    33,
+    3,
     'Location de petit outillage'
   ),(
     14,
     'Matériauthèque : accès à une matériauthèque où vous pouvez trouver à moindre coût des matériaux de réemploi',
     'recyclerie-services-02.jpeg',
-    33,
+    3,
     'Matériautèque'
   ),(
     15,
     'Ateliers d’upcycling : des ateliers d’upcycling (relooking ou détournement d’objets) dont le planning et les tarifs figurent ci-après.',
     'recyclerie-services-03.jpg',
-    33,
+    3,
     'Ateliers d\'upcycling'
   ),(
     16,
@@ -173,19 +173,6 @@ VALUES
     'bonjour@laboitedacote.fr',
     'recyclerie-mini.jpg',
     'Deuxième vie et créativité'
-  ),(
-    43,
-    'poulet',
-    'dsvq',
-    'pouletjj',
-    'poulet',
-    'poulet',
-    'poulet',
-    'poulet',
-    '564',
-    'poulet@poulet',
-    'poulet',
-    'poulet'
   );
   /*!40000 ALTER TABLE `pole` ENABLE KEYS */;
 UNLOCK TABLES;

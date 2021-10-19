@@ -28,7 +28,9 @@ membersRouter.get('/:id', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Error retrieving team member from database')
+      res
+        .status(500)
+        .json({ message: 'Error retrieving team member from database' })
     })
 })
 
@@ -38,7 +40,7 @@ membersRouter.post('/', verifyToken, (req, res) => {
   if (!member_name) res.status(401).json({ message: 'Name is required' })
   else {
     Member.findOneWithName(member_name).then(user => {
-      console.log('finUser', user)
+      console.log('findUser', user)
       if (user) {
         res.status(401).json({ message: `Member already exists` })
       } else {
@@ -78,7 +80,6 @@ membersRouter.put('/:id', verifyToken, (req, res) => {
         Member.update(member_id, req.body)
       }
     })
-
     .then(() => {
       res
         .status(200)
