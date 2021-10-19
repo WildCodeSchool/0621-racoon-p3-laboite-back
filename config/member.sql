@@ -39,7 +39,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'sylvie-potter.jpg','Sylvie Vannier','Responsable principal'),(2,NULL,'Thierry Petonnet','Président'),(3,NULL,'bibi','bibi');
+INSERT INTO `member` VALUES (1,'sylvie-potter.jpg','Sylvie Vannier','Responsable principal'),(2,NULL,'Thierry Petonnet','Président'),(3,NULL,'Hélène Ferreira','Responsable Pôle Végétal');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
