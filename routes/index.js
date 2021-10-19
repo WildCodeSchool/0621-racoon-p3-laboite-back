@@ -6,6 +6,8 @@ const poleRouter = require('./pole')
 const membersRouter = require('./members')
 const loginRouter = require('./login')
 const activitiesRouter = require('./activity')
+const partnershipRouter = require('./partnership')
+const partnersRouter = require('./partners')
 
 // add your middware route: app.use('url', myRouter)
 const setupRoutes = app => {
@@ -16,6 +18,8 @@ const setupRoutes = app => {
   app.use('/members', membersRouter)
   app.use('/login', loginRouter)
   app.use('/activities', activitiesRouter)
+  app.use('/partnership', partnershipRouter)
+  app.use('/partners', partnersRouter)
 }
 
 module.exports = { setupRoutes }

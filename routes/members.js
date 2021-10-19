@@ -1,5 +1,6 @@
 const membersRouter = require('express').Router()
 const Member = require('../models/member')
+const { verifyToken } = require('../helpers/Jwt')
 
 membersRouter.get('/', (req, res) => {
   Member.getInfo()
@@ -27,17 +28,19 @@ membersRouter.get('/:id', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Error retrieving team member from database')
+      res
+        .status(500)
+        .json({ message: 'Error retrieving team member from database' })
     })
 })
 
-membersRouter.post('/', (req, res) => {
+membersRouter.post('/', verifyToken, (req, res) => {
   const { member_name } = req.body
   console.log('memName', member_name)
   if (!member_name) res.status(401).json({ message: 'Name is required' })
   else {
     Member.findOneWithName(member_name).then(user => {
-      console.log('finUser', user)
+      console.log('findUser', user)
       if (user) {
         res.status(401).json({ message: `Member already exists` })
       } else {
@@ -59,7 +62,7 @@ membersRouter.post('/', (req, res) => {
   }
 })
 
-membersRouter.put('/:id', (req, res) => {
+membersRouter.put('/:id', verifyToken, (req, res) => {
   const member_id = req.params.id
   let validationErrors = null
   Member.findOne(member_id)
@@ -77,7 +80,6 @@ membersRouter.put('/:id', (req, res) => {
         Member.update(member_id, req.body)
       }
     })
-
     .then(() => {
       res
         .status(200)
@@ -89,7 +91,7 @@ membersRouter.put('/:id', (req, res) => {
     })
 })
 
-membersRouter.delete('/:id', (req, res) => {
+membersRouter.delete('/:id', verifyToken, (req, res) => {
   const member_id = req.params.id
   console.log('member_id:', member_id)
   Member.destroy(member_id)

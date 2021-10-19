@@ -1,6 +1,7 @@
 const activitiesRouter = require('express').Router()
 const activity = require('../models/activity')
 // const upload = multer({ dest: '../public/images' })
+const { verifyToken } = require('../helpers/Jwt')
 
 activitiesRouter.get('/', (req, res) => {
   activity
@@ -10,7 +11,9 @@ activitiesRouter.get('/', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Error retrieving from database')
+      res
+        .status(500)
+        .json({ message: 'Error retrieving activity from database' })
     })
 })
 
@@ -18,41 +21,71 @@ activitiesRouter.get('/:id', (req, res) => {
   activity
     .getById(req.params.id)
     .then(activity => {
-      if (activity) res.json(activity)
-      else res.status(404).send('activity not found')
+      if (!activity) res.status(404).json({ message: `Activity not found` })
+      else res.status(200).json(activity)
     })
     .catch(err => {
       console.error(err)
-      res.status(500).send('Error retrieving activity from database')
+      res
+        .status(500)
+        .json({ message: 'Error retrieving activity from database' })
     })
 })
 
-activitiesRouter.post('/', (req, res) => {
-  console.log('poulet01', req.file);
-  const { id, activity_title, activity_img, activity_desc, pole } = req.body
-  activity
-    .create(id, activity_title, activity_img, activity_desc, pole)
-    .then(result => res.json(result))
+activitiesRouter.post('/', verifyToken, (req, res) => {
+  const { id, activity_title, activity_img, activity_desc, pole_id } = req.body
+
+  if (!activity_title)
+    res.status(401).json({ message: 'Activity title is required' })
+  else {
+    activity.findOneWithTitle(activity_title).then(duplicateActivity => {
+      console.log('findActivity', duplicateActivity)
+      if (duplicateActivity) {
+        res.status(401).json({ message: `Activity already exists` })
+      } else {
+        console.log('body', req.body)
+
+        activity
+          .create(id, activity_title, activity_img, activity_desc, pole_id)
+          .then(result =>
+            res
+              .status(201)
+              .json({ message: 'Activity Created !', activity: result })
+          )
+          .catch(err => {
+            console.error(err)
+            res.status(500).json({ message: `Error saving the activity` })
+          })
+      }
+    })
+  }
 })
 
-activitiesRouter.put('/:id', (req, res) => {
-  const activityId = req.params.id
+activitiesRouter.put('/:id', verifyToken, (req, res) => {
+  const activity_id = req.params.id
   activity
-    .update(activityId, req.body)
-    .then(() => res.status(200).json(req.body))
-    .catch(err => res.status(500).send('Error modifying data'))
+    .update(activity_id, req.body)
+    .then(() =>
+      res
+        .status(200)
+        .json({ message: 'Activity updated !', activity: { ...req.body } })
+    )
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ message: `Error updating the activity` })
+    })
 })
 
-activitiesRouter.delete('/:id', (req, res) => {
+activitiesRouter.delete('/:id', verifyToken, (req, res) => {
   activity
     .destroy(req.params.id)
     .then(deleted => {
-      if (deleted) res.status(200).send('Activity deleted')
-      else res.status(404).send('Activity not found')
+      if (deleted) res.status(200).json({ message: `🎉 Activity deleted!` })
+      else res.status(404).json({ message: `Activity not found` })
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Error deleting activity')
+      res.status(500).json({ message: `Error deleting an Activity` })
     })
 })
 
