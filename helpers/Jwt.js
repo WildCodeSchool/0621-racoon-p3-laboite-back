@@ -14,13 +14,14 @@ const calculateToken = (userEmail = '', user_id = '') => {
 // Middleware pour checker le JWT
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  console.log('auth', authHeader, 'token', token)
+  const token = authHeader && JSON.parse(authHeader.split(' ')[1])
+  const bearer = authHeader && authHeader.split(' ')[0]
 
-  if (token == null)
+  if (token == null) {
     return res
       .status(401)
       .json({ auth: false, message: 'Baerer Json Web Token is required!' })
+  }
 
   jwt.verify(token, process.env.PRIVATE_KEY, (err, decoded) => {
     console.log('decoded:', decoded)

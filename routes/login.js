@@ -68,7 +68,7 @@ loginRouter.get('/isUserAuth', verifyToken, async (req, res) => {
   try {
     return res.status(200).json('Your Authenticated!')
   } catch (error) {
-    return res.status(500).json({ auth: false, message: 'Wrong token' })
+    return res.status(500).json('Wrong token')
   }
 })
 
