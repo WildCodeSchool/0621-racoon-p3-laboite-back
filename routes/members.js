@@ -36,17 +36,13 @@ membersRouter.get('/:id', (req, res) => {
 
 membersRouter.post('/', verifyToken, (req, res) => {
   const { member_name } = req.body
-  console.log('memName', member_name)
   if (!member_name) res.status(401).json({ message: 'Name is required' })
   else {
     Member.findOneWithName(member_name).then(user => {
-      console.log('findUser', user)
       if (user) {
         res.status(401).json({ message: `Member already exists` })
       } else {
-        console.log('body', req.body)
         const { member_img, member_name, member_role } = req.body
-        console.log('body data', member_img, member_name, member_role)
         Member.create(member_img, member_name, member_role)
           .then(createdTeam => {
             res
@@ -72,7 +68,6 @@ membersRouter.put('/:id', verifyToken, (req, res) => {
           .status(404)
           .json({ message: `Member with id ${member_id} not found.` })
       }
-      console.log(req.body)
       validationErrors = Member.validate(req.body, false)
       if (validationErrors) {
         res.status(422).json({ validationErrors: validationErrors.details })
@@ -93,7 +88,6 @@ membersRouter.put('/:id', verifyToken, (req, res) => {
 
 membersRouter.delete('/:id', verifyToken, (req, res) => {
   const member_id = req.params.id
-  console.log('member_id:', member_id)
   Member.destroy(member_id)
     .then(deleted => {
       if (deleted) res.status(200).json({ message: `🎉 Member deleted!` })
