@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bac
 -- ------------------------------------------------------
@@ -28,7 +28,7 @@ CREATE TABLE `partner` (
   `partner_name` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`partner_id`),
   UNIQUE KEY `id_UNIQUE` (`partner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `partner` (
 
 LOCK TABLES `partner` WRITE;
 /*!40000 ALTER TABLE `partner` DISABLE KEYS */;
-INSERT INTO `partner` VALUES (1,NULL,'Commune de Bléré'),(2,NULL,'Communauté de Communes Bléré-Val de Cher'),(3,NULL,'Département d\'Indre-et-Loire'),(4,NULL,'Région Centre-Val de Loire'),(5,NULL,'CRI (Château Renault Insertion)'),(6,NULL,'Association La Main Tendue'),(7,NULL,'Pôle Emploi'),(8,NULL,'Chambres consulaires'),(9,NULL,'Rotary club d’Amboise');
+INSERT INTO `partner` VALUES (1,'1634597779758mairiedeblere.png','Commune de Bléré'),(2,'1634627952081Communauté_de_communes_de_Bléré_Val_de_Cher.png','Communauté de Communes Bléré-Val de Cher'),(3,'1634628321229logo_touraine_dpt_bleu.png','Département d\'Indre-et-Loire'),(4,'1634628642059Region_Centre_Val_de_Loire.png','Région Centre-Val de Loire'),(5,NULL,'CRI (Château Renault Insertion)'),(6,NULL,'Association La Main Tendue'),(7,'1634629134321pole-emploi.png','Pôle Emploi'),(8,NULL,'Chambres consulaires'),(9,'','Rotary club d’Amboise');
 /*!40000 ALTER TABLE `partner` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-15 10:36:54
+-- Dump completed on 2021-10-19  9:45:34
