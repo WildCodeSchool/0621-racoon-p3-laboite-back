@@ -7,6 +7,9 @@ const connection = require('./db-config.js')
 const app = express()
 const multer = require('multer')
 
+// fs is used to delete files
+// const fs = require('fs')
+
 const port = process.env.PORT || 4000
 
 // Connection MySQL
@@ -24,7 +27,7 @@ const storage = multer.diskStorage({
     cb(null, './public/images')
   },
   filename: (req, file, cb) => {
-    console.log('YOLO file', file)
+    console.log('file', file)
     cb(null, file.originalname)
   }
 })
@@ -49,6 +52,20 @@ app.post(
   }
 )
 
+// delete image from /public/images folder
+// const deleteDir = './public/images/'
+// const deleteFile = 'xxx.svg' // replace xxx by filename
+// const pathToFile = deleteDir + deleteFile
+// console.log(pathToFile)
+
+// fs.unlink(pathToFile, function(err) {
+//   if (err) {
+//     throw err
+//   } else {
+//     console.log('Successfully deleted the file.')
+//   }
+// })
+
 // Route middleware
 app.use(cors())
 app.use(morgan('tiny'))
@@ -56,7 +73,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/static', express.static(__dirname + '/public'))
-
 
 setupRoutes(app)
 
