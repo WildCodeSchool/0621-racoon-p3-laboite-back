@@ -1,6 +1,5 @@
 const activitiesRouter = require('express').Router()
 const activity = require('../models/activity')
-// const upload = multer({ dest: '../public/images' })
 const { verifyToken } = require('../helpers/Jwt')
 
 activitiesRouter.get('/', (req, res) => {
