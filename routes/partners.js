@@ -34,16 +34,6 @@ partnersRouter.get('/:id', (req, res) => {
 
 //Add
 partnersRouter.post('/', verifyToken, (req, res) => {
-  // const { partner_name } = req.body
-  // console.log('partnerName', partner_name)
-  // if (!partner_name) res.status(401).json({ message: 'Name is required' })
-  // else {
-  //   Partners.findOneWithName(partner_name).then(part => {
-  //     console.log('findPartner', part)
-  //     if (part) {
-  //       res.status(401).json({ message: `partner already exists` })
-  //     } else {
-  //       console.log('body', req.body)
   const { partner_img, partner_name } = req.body
   console.log('body data', partner_img, partner_name)
   Partners.create(partner_img, partner_name)
@@ -57,8 +47,7 @@ partnersRouter.post('/', verifyToken, (req, res) => {
       res.status(500).json({ message: `Error saving the partner` })
     })
 })
-//   }
-// })
+
 
 //Modify
 partnersRouter.put('/:id', verifyToken, (req, res) => {
