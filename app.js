@@ -32,16 +32,22 @@ const storage = multer.diskStorage({
 //multer upload
 const upload = multer({
   storage: storage
-  // fileFilter(req, file, cb) {
-  //   if(!file.fieldname.originalname.match(/\.(jpeg|jpg)$/)) {
-  //     return cb(new Error('.jpg or .jpeg allowed'))
-  //   }
-  // }
 })
 
-app.post('/upload', upload.fields([{name: 'activity_img'}, {name: 'pole_banner'}, {name: 'pole_func_img'}, {name: 'pole_miniature_img'}, {name: 'member_img'}, {name: 'partner_img'}]), (req, res) => {
-  res.status(200).json('Uploaded')
-})
+app.post(
+  '/upload',
+  upload.fields([
+    { name: 'activity_img' },
+    { name: 'pole_banner' },
+    { name: 'pole_func_img' },
+    { name: 'pole_miniature_img' },
+    { name: 'member_img' },
+    { name: 'partner_img' }
+  ]),
+  (req, res) => {
+    res.status(200).json('Uploaded')
+  }
+)
 
 // Route middleware
 app.use(cors())
@@ -51,9 +57,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/static', express.static(__dirname + '/public'))
 
-// app.get('/partenaires', (req, res) =>{
-//   res.status(200).send('Je suis dans le /')
-// })
 
 setupRoutes(app)
 

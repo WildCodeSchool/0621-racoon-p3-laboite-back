@@ -26,7 +26,6 @@ async function main(mailData) {
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
   console.log(info)
-  info()
 }
 
 module.exports = { main }
