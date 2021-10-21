@@ -6,7 +6,7 @@ const calculateToken = (userEmail = '', user_id = '') => {
     { userEmail: userEmail, user_id: user_id },
     process.env.PRIVATE_KEY,
     {
-      expiresIn: '24h'
+      expiresIn: '8h'
     }
   )
 }
@@ -15,7 +15,6 @@ const calculateToken = (userEmail = '', user_id = '') => {
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
   const token = authHeader && JSON.parse(authHeader.split(' ')[1])
-  const bearer = authHeader && authHeader.split(' ')[0]
 
   if (token == null) {
     return res
