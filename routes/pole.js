@@ -1,5 +1,4 @@
 const mysql = require('../db-config')
-// const { promise } = require('../db-config')
 const poleRouter = require('express').Router()
 const { verifyToken } = require('../helpers/Jwt')
 

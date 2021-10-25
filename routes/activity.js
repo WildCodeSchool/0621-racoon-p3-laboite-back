@@ -38,12 +38,9 @@ activitiesRouter.post('/', verifyToken, (req, res) => {
     res.status(401).json({ message: 'Activity title is required' })
   else {
     activity.findOneWithTitle(activity_title).then(duplicateActivity => {
-      console.log('findActivity', duplicateActivity)
       if (duplicateActivity) {
         res.status(401).json({ message: `Activity already exists` })
       } else {
-        console.log('body', req.body)
-
         activity
           .create(id, activity_title, activity_img, activity_desc, pole_id)
           .then(result =>

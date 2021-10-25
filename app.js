@@ -24,7 +24,6 @@ const storage = multer.diskStorage({
     cb(null, './public/images')
   },
   filename: (req, file, cb) => {
-    console.log('YOLO file', file)
     cb(null, file.originalname)
   }
 })
@@ -56,7 +55,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/static', express.static(__dirname + '/public'))
-
 
 setupRoutes(app)
 
