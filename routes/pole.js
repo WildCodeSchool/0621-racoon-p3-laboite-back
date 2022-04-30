@@ -1,130 +1,139 @@
-const mysql = require('../db-config')
-const poleRouter = require('express').Router()
+const polesRouter = require('express').Router()
+const poleService = require('../models/pole')
 const { verifyToken } = require('../helpers/Jwt')
 
 // Get all poles without activities
-poleRouter.get('/', (req, res) => {
-  mysql.query('SELECT p.* FROM pole as p', (err, result) => {
-    if (err) {
-      res.status(500).send('Error retrieving data from database')
-    } else {
-      res.status(200).json(result)
-    }
-  })
+polesRouter.get('/', (req, res) => {
+  poleService
+    .getInfo(req.query)
+    .then(pole => {
+      res.json(pole)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ message: 'Error retrieving poles from databa' })
+    })
 })
 
-// Get one pole for admin update
-poleRouter.get('/admin/:id', verifyToken, (req, res) => {
+// Get one pole by ID without activities for backoffice
+polesRouter.get('/admin/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
-  mysql.query('SELECT * FROM pole WHERE id = ?', [poleId], (err, result) => {
-    if (err) {
-      res.status(500).send('Error retrieving data from database')
-    } else {
-      res.status(200).json(result)
-    }
-  })
+  poleService
+    .getById(poleId)
+    .then(pole => {
+      if (!pole) res.status(404).json({ message: `pole not found` })
+      else res.status(200).json(pole)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ message: 'Error retrieving pole from database' })
+    })
 })
 
-// Get one pole by ID
-poleRouter.get('/:id', (req, res) => {
+// Get one pole by ID with activities for public
+polesRouter.get('/:id', (req, res) => {
   const poleId = req.params.id
-  mysql.query(
-    'SELECT p.*, a.activity_desc, a.activity_img, a.activity_title, a.pole_id, a.id FROM pole as p LEFT JOIN activity as a ON p.id=a.pole_id WHERE p.id = ?',
-    [poleId],
-    (err, result) => {
-      if (err) {
-        res.status(500).send('Error retrieving data from database one pole')
-      } else {
-        // test if the id exist
-        if (result.length === 0) {
-          res.status(404).send('not found')
-          return
-        }
-        // create entity mapped with result in order to get the activities inside one pole
-        let poleEntity = {
-          pole_id: result[0].id,
-          pole_name: result[0].pole_name,
-          pole_title: result[0].pole_title,
-          pole_picto: result[0].pole_picto,
-          pole_desc: result[0].pole_desc,
-          pole_banner: result[0].pole_banner,
-          pole_func: result[0].pole_func,
-          pole_func_img: result[0].pole_func_img,
-          pole_num: result[0].pole_num,
-          pole_email: result[0].pole_email,
-          pole_miniature_img: result[0].pole_miniature_img,
-          pole_catchphrase: result[0].pole_catchphrase,
-          activities: []
-        }
-        for (let i = 0; i < result.length; i++) {
-          if (result[i].pole_id) {
-            poleEntity.activities.push({
-              id: result[i].id,
-              activity_desc: result[i].activity_desc,
-              activity_img: result[i].activity_img,
-              activity_title: result[i].activity_title
-            })
-          }
-        }
-        res.status(200).json(poleEntity)
+  poleService
+    .getByIdFull(poleId)
+    // test if the id exist
+    .then(result => {
+      if (!result) {
+        res.status(404).json({ message: `pole not found` })
+        return
       }
-    }
-  )
+
+      // create entity mapped with result in order to get the activities inside one pole
+      // avec une seule requête tu crées un tableau d'objets ou tu récupères n fois le nombre d'activités le pole requêté by id
+      let pole = result[0]
+      let poleEntity = {
+        pole_id: pole.pole_id,
+        pole_name: pole.pole_name,
+        pole_title: pole.pole_title,
+        pole_picto: pole.pole_picto,
+        pole_desc: pole.pole_desc,
+        pole_banner: pole.pole_banner,
+        pole_func: pole.pole_func,
+        pole_func_img: pole.pole_func_img,
+        pole_num: pole.pole_num,
+        pole_email: pole.pole_email,
+        pole_miniature_img: pole.pole_miniature_img,
+        pole_catchphrase: pole.pole_catchphrase,
+        activities: []
+      }
+
+      // on push les activités avec la foreign key pole_id liée dans activities
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].id) {
+          console.log(result)
+          poleEntity.activities.push({
+            id: result[i].id,
+            activity_desc: result[i].activity_desc,
+            activity_img: result[i].activity_img,
+            activity_title: result[i].activity_title
+          })
+        }
+      }
+
+      res.status(200).json(poleEntity)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ message: 'Error retrieving pole from database' })
+    })
 })
 
-// Post ---------------------------------------------------------
-poleRouter.post('/', verifyToken, (req, res) => {
-  const poleData = [
-    req.body.pole_name,
-    req.body.pole_title,
-    req.body.pole_picto,
-    req.body.pole_desc,
-    req.body.pole_banner,
-    req.body.pole_func,
-    req.body.pole_func_img,
-    req.body.pole_num,
-    req.body.pole_email,
-    req.body.pole_miniature_img,
-    req.body.pole_catchphrase
-  ]
-  console.table(req.body)
-  const sql =
-    'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-  mysql.query(sql, poleData, (err, result) => {
-    if (err) {
-      res.status(500).send('Error from database')
-    } else {
-      console.table(result)
-      res.status(201).json(result)
-    }
-  })
+// Post -------------------------------------------------
+// Create a pole -------------
+polesRouter.post('/', verifyToken, (req, res) => {
+  const poleData = req.body
+  if (!poleData.pole_title)
+    res.status(401).json({ message: 'Pole title is required' })
+  else {
+    poleService.findOneWithTitle(poleData.pole_title).then(duplicatePole => {
+      if (duplicatePole) {
+        res.status(401).json({ message: `Pole already exists` })
+      } else {
+        poleService
+          .create(poleData)
+          .then(result =>
+            res.status(201).json({ message: 'Pole Created !', poleId: result })
+          )
+          .catch(err => {
+            console.error(err)
+            res.status(500).json({ message: `Error saving the pole` })
+          })
+      }
+    })
+  }
 })
 
-// Modify -------------------------------------------
-poleRouter.put('/:id', verifyToken, (req, res) => {
+// Modify pole -------------------------------------------
+polesRouter.put('/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
-  const sql = `UPDATE pole SET ? WHERE id = ?`
   const values = [req.body, poleId]
-  mysql.query(sql, values, (err, result) => {
-    if (err) {
-      res.status(500).send('error modifying data')
-    } else {
-      console.table(result)
-      res.status(200).json(result)
-    }
-  })
+  poleService
+    .update(pole_id, values)
+    .then(() =>
+      res.status(200).json({ message: 'Pole updated !', pole: values })
+    )
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ message: `Error updating the pole` })
+    })
 })
-
-// Delete ------------------------------------------
-poleRouter.delete('/:id', verifyToken, (req, res) => {
+// Delete pole ------------------------------------------
+polesRouter.delete('/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
-  mysql.query('DELETE FROM pole WHERE id = ? ', [poleId], err => {
-    if (err) {
-      res.status(500).send('Error deleting pole')
-    } else {
-      res.status(200).send('Pole deleted')
-    }
-  })
+  poleService
+    .destroy(poleId)
+    .then(deleted => {
+      if (deleted) res.status(200).json({ message: `🎉 Pole deleted!` })
+      else res.status(404).json({ message: `Pole not found` })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ message: `Error deleting a Pole` })
+    })
 })
 
-module.exports = poleRouter
+module.exports = polesRouter
