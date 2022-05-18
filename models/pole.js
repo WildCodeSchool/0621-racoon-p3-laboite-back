@@ -12,7 +12,7 @@ const getInfo = () => {
 
 // Get one pole by id without activities
 const getById = id => {
-  let sql = 'SELECT * FROM activity WHERE id = ?'
+  let sql = 'SELECT * FROM pole WHERE id = ?'
   return db.query(sql, [id]).then(([result]) => result[0])
 }
 
