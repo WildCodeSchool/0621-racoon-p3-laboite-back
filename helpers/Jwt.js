@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
   if (token == null) {
     return res
       .status(401)
-      .json({ auth: false, message: 'Baerer Json Web Token is required!' })
+      .json({ auth: false, message: 'Bearer Json Web Token is required!' })
   }
 
   jwt.verify(token, process.env.PRIVATE_KEY, (err, decoded) => {

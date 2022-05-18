@@ -110,11 +110,12 @@ polesRouter.post('/', verifyToken, (req, res) => {
 // Modify pole -------------------------------------------
 polesRouter.put('/:id', verifyToken, (req, res) => {
   const poleId = req.params.id
-  const values = [req.body, poleId]
   poleService
-    .update(pole_id, values)
+    .update(poleId, req.body)
     .then(() =>
-      res.status(200).json({ message: 'Pole updated !', pole: values })
+      res
+        .status(200)
+        .json({ message: `Pole ${poleId} updated !`, pole: req.body })
     )
     .catch(err => {
       console.error(err)

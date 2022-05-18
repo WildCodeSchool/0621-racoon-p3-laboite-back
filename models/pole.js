@@ -32,40 +32,6 @@ const findOneWithTitle = title => {
 }
 
 // Create a pole
-const createPrevious = pole => {
-  const poleData = [
-    pole.pole_name,
-    pole.pole_title,
-    pole.pole_picto,
-    pole.pole_desc,
-    pole.pole_banner,
-    pole.pole_func,
-    pole.pole_func_img,
-    pole.pole_num,
-    pole.pole_email,
-    pole.pole_miniature_img,
-    pole.pole_catchphrase
-  ]
-  return db
-    .query(
-      'INSERT INTO pole (pole_name, pole_title, pole_picto, pole_desc, pole_banner, pole_func, pole_func_img, pole_num, pole_email, pole_miniature_img, pole_catchphrase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      poleData
-    )
-    .then(
-      ([result]) => pole_name,
-      pole_title,
-      pole_picto,
-      pole_desc,
-      pole_banner,
-      pole_func,
-      pole_func_img,
-      pole_num,
-      pole_email,
-      pole_miniature_img,
-      pole_catchphrase
-    )
-}
-
 const create = pole => {
   const poleData = [
     pole.pole_name,
